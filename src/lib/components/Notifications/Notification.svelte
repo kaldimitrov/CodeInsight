@@ -5,6 +5,21 @@
 	import Warning from '../../../assets/icons/Warning.svelte';
 	import Info from '../../../assets/icons/Info.svelte';
 	import { AlertLevels } from './enums/alertLevels';
+
+	function getIconComponent(level: AlertLevels) {
+        switch (level) {
+            case AlertLevels.SUCCESS:
+                return Success;
+            case AlertLevels.ERROR:
+                return Error;
+            case AlertLevels.WARNING:
+                return Warning;
+            case AlertLevels.INFO:
+                return Info;
+            default:
+                return Info;
+        }
+    }
 </script>
 
 <div class="toast toast-top toast-end z-50">
@@ -13,16 +28,7 @@
 			id={`notification-${notification.id}`}
 			class={`alert alert-${notification.level} transition-opacity duration-1000`}
 		>
-			{#if notification.level == AlertLevels.SUCCESS}
-				<Success />
-			{:else if notification.level == AlertLevels.ERROR}
-				<Error />
-			{:else if notification.level == AlertLevels.WARNING}
-				<Warning />
-			{:else if notification.level == AlertLevels.INFO}
-				<Info />
-			{/if}
-
+			<svelte:component this={getIconComponent(notification.level)} />
 			<span>{notification.text}</span>
 		</div>
 	{/each}
