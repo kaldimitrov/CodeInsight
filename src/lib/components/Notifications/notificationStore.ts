@@ -7,7 +7,7 @@ export class Notification {
 	duration: number = 5000;
 
 	constructor(text: string, level: AlertLevels, duration: number) {
-		this.id = Date.now();
+		this.id = Number((Date.now() + Math.random() * 1000).toFixed(0));
 		this.text = text;
 		this.level = level;
 		this.duration = duration;

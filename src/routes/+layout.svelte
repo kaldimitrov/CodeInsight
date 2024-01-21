@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Notification } from '$lib/components/Notifications/notificationStore';
+	import Notification from '$lib/components/Notifications/Notification.svelte';
 	import { theme } from '$lib/theme/themeStore';
 	import type { Themes } from '$lib/theme/enums/themes';
 	import '../app.css';
@@ -12,4 +12,5 @@
 	});
 </script>
 
+<Notification />
 <slot />
