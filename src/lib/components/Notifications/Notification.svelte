@@ -7,19 +7,19 @@
 	import { AlertLevels } from './enums/alertLevels';
 
 	function getIconComponent(level: AlertLevels) {
-        switch (level) {
-            case AlertLevels.SUCCESS:
-                return Success;
-            case AlertLevels.ERROR:
-                return Error;
-            case AlertLevels.WARNING:
-                return Warning;
-            case AlertLevels.INFO:
-                return Info;
-            default:
-                return Info;
-        }
-    }
+		switch (level) {
+			case AlertLevels.SUCCESS:
+				return Success;
+			case AlertLevels.ERROR:
+				return Error;
+			case AlertLevels.WARNING:
+				return Warning;
+			case AlertLevels.INFO:
+				return Info;
+			default:
+				return Info;
+		}
+	}
 </script>
 
 <div class="toast toast-top toast-end z-50">
