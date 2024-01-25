@@ -1,15 +1,16 @@
-<script lang='ts'>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import FileObject from './FileObject.svelte';
-	import { currentFile } from './editorStore';
+	import { currentFile, fileSystem, setFileSystem, storeCurrentState } from './editorStore';
+	import { v4 as uuidv4 } from 'uuid';
+	import { FileTypes } from './enums/fileTypes';
 
-	let itemMap: any;
-	let menuItems: any = [];
+	let fileMap: any;
 
 	onMount(() => {
-		menuItems = JSON.parse(localStorage.getItem('menuItems') || '[]');
-		itemMap = buildPathMap(menuItems);
-	})
+		setFileSystem(JSON.parse(localStorage.getItem('fileSystem') || '[]'));
+		fileMap = buildPathMap($fileSystem);
+	});
 
 	function buildPathMap(items: any, map: any = {}) {
 		items.forEach((item: any) => {
@@ -22,22 +23,18 @@
 		});
 		return map;
 	}
-
-	function storeCurrentState() {
-		localStorage.setItem('menuItems', JSON.stringify(menuItems));
-	}
 </script>
 
 <div class="flex border rounded-lg overflow-hidden container min-h-96">
 	<ul class="menu menu-xs bg-base-200 rounded-lg flex-none w-full max-w-xs">
-	  {#each menuItems as item}
-		<FileObject {item} />
-	  {/each}
+		{#each $fileSystem as file}
+			<FileObject {file} />
+		{/each}
 	</ul>
 	{#if $currentFile}
-		<textarea 
-			class="textarea flex-1 resize-none" 
-			bind:value={itemMap[$currentFile].content}
+		<textarea
+			class="textarea flex-1 resize-none"
+			bind:value={fileMap[$currentFile].content}
 			on:input={() => storeCurrentState()}
 		/>
 	{/if}

@@ -1,23 +1,23 @@
 <script lang="ts">
 	import { notifications } from './notificationStore';
-	import Success from '../../../assets/icons/Success.svelte';
-	import Error from '../../../assets/icons/Error.svelte';
-	import Warning from '../../../assets/icons/Warning.svelte';
-	import Info from '../../../assets/icons/Info.svelte';
+	import SuccessIcon from '../../../assets/icons/Success.svelte';
+	import ErrorIcon from '../../../assets/icons/Error.svelte';
+	import WarningIcon from '../../../assets/icons/Warning.svelte';
+	import InfoIcon from '../../../assets/icons/Info.svelte';
 	import { AlertLevels } from './enums/alertLevels';
 
 	function getIconComponent(level: AlertLevels) {
 		switch (level) {
 			case AlertLevels.SUCCESS:
-				return Success;
+				return SuccessIcon;
 			case AlertLevels.ERROR:
-				return Error;
+				return ErrorIcon;
 			case AlertLevels.WARNING:
-				return Warning;
+				return WarningIcon;
 			case AlertLevels.INFO:
-				return Info;
+				return InfoIcon;
 			default:
-				return Info;
+				return InfoIcon;
 		}
 	}
 </script>

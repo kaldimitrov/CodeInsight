@@ -1,53 +1,76 @@
 <script lang="ts">
-	import { currentFile, setCurrentFile } from './editorStore.js';
+	import FileIcon from '../../../assets/icons/File.svelte';
+	import FolderIcon from '../../../assets/icons/Folder.svelte';
+	import { currentFile, setCurrentFile, storeCurrentState } from './editorStore.js';
 	import { FileTypes } from './enums/fileTypes.js';
 
-	export let item: any;
+	export let file: any;
+
+	let editingLabel = false;
+	let newLabel = file.label;
+
+	function handleDoubleClick() {
+		editingLabel = true;
+	}
+
+	function handleBlur() {
+		file.label = newLabel;
+		editingLabel = false;
+		storeCurrentState();
+	}
+
+	function handleKeyDown(event: any) {
+		if (event.key === 'Enter') {
+			handleBlur();
+		}
+	}
 </script>
 
-{#if item.type === FileTypes.FOLDER}
+{#if file.type === FileTypes.FOLDER}
 	<li>
 		<details open>
-			<summary class="text-base flex flex-row">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					stroke="currentColor"
-					class="w-4 h-4"
-					><path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-					/></svg
-				>
-				{item.label}
+			<summary class="text-base flex flex-row" on:dblclick={handleDoubleClick}>
+				<FolderIcon />
+				{#if editingLabel}
+					<input
+						class="outline-none"
+						type="text"
+						bind:value={newLabel}
+						on:blur={handleBlur}
+						on:keydown={handleKeyDown}
+						autofocus
+					/>
+				{:else}
+					{file.label}
+				{/if}
 			</summary>
 			<ul>
-				{#each item.children as child}
-					<svelte:self item={child} />
+				{#each file.children as child}
+					<svelte:self file={child} />
 				{/each}
 			</ul>
 		</details>
 	</li>
-{:else if item.type === FileTypes.FILE}
+{:else if file.type === FileTypes.FILE}
 	<li>
-		<summary class={`text-base flex flex-row ${item.uuid == $currentFile ? 'text-primary' : ''}`} on:click={() => setCurrentFile(item.uuid)}>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="w-4 h-4"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-				/></svg
-			>
-			{item.label}
+		<summary
+			class={`text-base flex flex-row ${file.uuid == $currentFile ? 'text-primary' : ''}`}
+			on:dblclick={handleDoubleClick}
+			on:click={() => setCurrentFile(file.uuid)}
+		>
+			<FileIcon />
+			{#if editingLabel}
+				<input
+					class="outline-none"
+					type="text"
+					bind:value={newLabel}
+					on:blur={handleBlur}
+					on:keydown={handleKeyDown}
+					autofocus
+				/>
+			{:else}
+				{file.label}
+			{/if}
 		</summary>
 	</li>
 {/if}
