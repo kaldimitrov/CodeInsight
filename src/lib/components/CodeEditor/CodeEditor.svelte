@@ -23,6 +23,41 @@
 		});
 		return map;
 	}
+
+	function createFileWithPath(path: string, content: string) {
+		const levels = path.split('/');
+		let currentLevel = $fileSystem;
+
+		for (let i = 0; i < levels.length; i++) {
+			const segment = levels[i];
+			const isFile = i === levels.length - 1;
+			let found = currentLevel.find((item: any) => item.label === segment);
+
+			if (segment === '') continue;
+
+			if (!found) {
+				if (isFile) {
+					found = {
+						uuid: uuidv4(),
+						label: segment,
+						type: FileTypes.FILE,
+						content: content
+					};
+					currentLevel.push(found);
+				} else {
+					found = {
+						label: segment,
+						type: FileTypes.FOLDER,
+						children: []
+					};
+					currentLevel.push(found);
+					currentLevel = found.children;
+				}
+			} else if (found.type === 'folder') {
+				currentLevel = found.children;
+			}
+		}
+	}
 </script>
 
 <div class="flex border rounded-lg overflow-hidden container min-h-96">
