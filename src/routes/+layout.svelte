@@ -6,7 +6,6 @@
 	import { connectSocket } from '../helpers/socket';
 	import { setToken, token } from '$lib/userStore';
 	import '../app.css';
-	import { getLanguages } from '../helpers/requests/code.requests';
 	import { addMessages, init, getLocaleFromNavigator } from 'svelte-i18n';
 	import en from '../configuration/translations/en.json';
 
@@ -27,8 +26,6 @@
 			fallbackLocale: 'en',
 			initialLocale: getLocaleFromNavigator(),
 		});
-
-		console.log(await getLanguages());
 	});
 </script>
 

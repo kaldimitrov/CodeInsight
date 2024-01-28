@@ -1,6 +1,6 @@
 import { locale, dictionary } from 'svelte-i18n';
 
-export function isValidTranslationKey(key: string) {
+export function isTranslationKey(key: string) {
 	let currentLocale: any;
 	let currentDictionary: any;
 

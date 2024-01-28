@@ -1,17 +1,14 @@
 import { AlertLevels } from '$lib/components/notifications/enums/alertLevels';
 import { pushNotification } from '$lib/components/notifications/notificationStore';
 import http from '../http';
-import { isValidTranslationKey } from '../translations';
+import { isTranslationKey } from '../translations';
 
-export async function getLanguages() {
-	console.log(isValidTranslationKey('test'));
-	console.log(isValidTranslationKey('max_files_error'));
-	try {
-		const response = await http.get('code/languages');
+export function getLanguages() {
+	return http.get('code/languages').catch((e: any) => {
+		const errorKey = isTranslationKey(e.response?.data?.message?.toLowerCase())
+			? e.response.data.message.toLowerCase()
+			: 'unexpected_error';
 
-		return response.data;
-	} catch (e: any) {
-		pushNotification(e.response.data.message, AlertLevels.ERROR);
-		return;
-	}
+		pushNotification(errorKey, AlertLevels.ERROR);
+	});
 }
