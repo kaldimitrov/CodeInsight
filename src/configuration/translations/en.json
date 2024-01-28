@@ -1,0 +1,8 @@
+{
+    "invalid_user_error": "Invalid user",
+    "email_taken_error": "Email already taken",
+    "cannot_create_user_error": "Cannot create user",
+    "invalid_credentials_error": "Invalid credentials",
+    "max_files_error": "Max files limit reached",
+    "active_containers_limit": "Active containers limit reached"
+}

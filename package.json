@@ -36,5 +36,10 @@
 		"uuid": "^9.0.1",
 		"vite": "^5.0.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"axios": "^1.6.7",
+		"socket.io-client": "^4.7.4",
+		"svelte-i18n": "^4.0.0"
+	}
 }

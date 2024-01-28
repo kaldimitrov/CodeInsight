@@ -1,5 +1,5 @@
 <script>
-	import CodeEditor from '$lib/components/CodeEditor/CodeEditor.svelte';
+	import CodeEditor from '$lib/components/editor/CodeEditor.svelte';
 	import ThemeSwitcher from '$lib/theme/ThemeSwitcher.svelte';
 </script>
 

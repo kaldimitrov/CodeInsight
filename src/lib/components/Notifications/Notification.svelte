@@ -5,6 +5,7 @@
 	import WarningIcon from '../../../assets/icons/Warning.svelte';
 	import InfoIcon from '../../../assets/icons/Info.svelte';
 	import { AlertLevels } from './enums/alertLevels';
+	import { t } from 'svelte-i18n';
 
 	function getIconComponent(level: AlertLevels) {
 		switch (level) {
@@ -29,7 +30,7 @@
 			class={`alert alert-${notification.level} transition-opacity duration-1000`}
 		>
 			<svelte:component this={getIconComponent(notification.level)} />
-			<span>{notification.text}</span>
+			<span>{$t(notification.text)}</span>
 		</div>
 	{/each}
 </div>
