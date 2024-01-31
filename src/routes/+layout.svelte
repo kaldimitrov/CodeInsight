@@ -3,7 +3,7 @@
 	import Notification from '$lib/components/notifications/Notification.svelte';
 	import { theme } from '$lib/theme/themeStore';
 	import type { Themes } from '$lib/theme/enums/themes';
-	import { connectSocket } from '../helpers/socket';
+	import { connectSocket } from '../helpers/socket.helper';
 	import { setToken, token } from '$lib/userStore';
 	import '../app.css';
 	import { addMessages, init, getLocaleFromNavigator } from 'svelte-i18n';
@@ -24,7 +24,7 @@
 
 		init({
 			fallbackLocale: 'en',
-			initialLocale: getLocaleFromNavigator(),
+			initialLocale: getLocaleFromNavigator()
 		});
 	});
 </script>

@@ -1,18 +1,36 @@
+import { AlertLevels } from '$lib/components/notifications/enums/alertLevels';
+import { pushNotification } from '$lib/components/notifications/notificationStore';
 import { setToken } from '$lib/userStore';
-import http from '../http';
+import http from '../http.helper';
+import { isTranslationKey } from '../translations.helper';
 import type { LoginUserDto, RegisterUserDto } from './dto/auth.dto';
 
-export async function registerUser(data: RegisterUserDto) {
-	const response = await http.post('users/register', data);
-    if (response.status == 201) {
+export function registerUser(data: RegisterUserDto) {
+	return http
+		.post('users/register', data)
+		.then((res) => {
+			setToken(res.data.token);
+		})
+		.catch((e: any) => {
+			const errorKey = isTranslationKey(e.response?.data?.message?.toLowerCase())
+				? e.response.data.message.toLowerCase()
+				: 'unexpected_error';
 
-    }
-	setToken(response.data.token);
-
-	return response.data;
+			pushNotification(errorKey, AlertLevels.ERROR);
+		});
 }
 
-export async function loginUser(data: LoginUserDto) {
-	const response = await http.post('users/login', data);
-	setToken(response.data.token);
+export function loginUser(data: LoginUserDto) {
+	return http
+		.post('users/login', data)
+		.then((res) => {
+			setToken(res.data.token);
+		})
+		.catch((e: any) => {
+			const errorKey = isTranslationKey(e.response?.data?.message?.toLowerCase())
+				? e.response.data.message.toLowerCase()
+				: 'unexpected_error';
+
+			pushNotification(errorKey, AlertLevels.ERROR);
+		});
 }

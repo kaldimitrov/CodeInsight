@@ -1,11 +1,11 @@
 {
-    "invalid_user_error": "Invalid user",
-    "email_taken_error": "Email already taken",
-    "cannot_create_user_error": "Cannot create user",
-    "invalid_credentials_error": "Invalid credentials",
-    "max_files_error": "Max files limit reached",
-    "active_containers_limit": "Active containers limit reached",
-    "backend_connection_error": "Error connecting to the server API",
-    "unauthorized": "You need to be logged in to perform this action",
-    "unexpected_error": "An unexpected error has occurred"
+	"invalid_user_error": "Invalid user",
+	"email_taken_error": "Email already taken",
+	"cannot_create_user_error": "Cannot create user",
+	"invalid_credentials_error": "Invalid credentials",
+	"max_files_error": "Max files limit reached",
+	"active_containers_limit": "Active containers limit reached",
+	"backend_connection_error": "Error connecting to the server API",
+	"unauthorized": "You need to be logged in to perform this action",
+	"unexpected_error": "An unexpected error has occurred"
 }

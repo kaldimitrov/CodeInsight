@@ -1,7 +1,7 @@
 import { AlertLevels } from '$lib/components/notifications/enums/alertLevels';
 import { pushNotification } from '$lib/components/notifications/notificationStore';
-import http from '../http';
-import { isTranslationKey } from '../translations';
+import http from '../http.helper';
+import { isTranslationKey } from '../translations.helper';
 
 export function getLanguages() {
 	return http.get('code/languages').catch((e: any) => {

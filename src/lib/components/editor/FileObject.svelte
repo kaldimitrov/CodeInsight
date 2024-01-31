@@ -30,10 +30,7 @@
 </script>
 
 {#if file.type === FileTypes.FOLDER}
-	<li
-		on:mouseenter={() => isHovering = true}
-		on:mouseleave={() => isHovering = false}
-	>
+	<li on:mouseenter={() => (isHovering = true)} on:mouseleave={() => (isHovering = false)}>
 		<details open>
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<summary class="text-base flex flex-row" on:dblclick={handleDoubleClick}>
@@ -66,14 +63,13 @@
 	</li>
 {:else if file.type === FileTypes.FILE}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<li
-		on:mouseenter={() => isHovering = true}
-		on:mouseleave={() => isHovering = false}
-	>
+	<li on:mouseenter={() => (isHovering = true)} on:mouseleave={() => (isHovering = false)}>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<summary
-			class={`text-base flex flex-row justify-between items-center ${file.uuid == $currentFile ? 'text-primary' : ''}`}
+			class={`text-base flex flex-row justify-between items-center ${
+				file.uuid == $currentFile ? 'text-primary' : ''
+			}`}
 			on:dblclick={handleDoubleClick}
 			on:click={() => setCurrentFile(file.uuid)}
 		>
@@ -104,10 +100,10 @@
 
 <style>
 	.grow-on-hover {
-	  transition: transform 0.2s ease;
+		transition: transform 0.2s ease;
 	}
-	
+
 	.grow-on-hover:hover {
-	  transform: scale(1.25);
+		transform: scale(1.25);
 	}
 </style>
