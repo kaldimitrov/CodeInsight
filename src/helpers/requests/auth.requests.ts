@@ -1,6 +1,6 @@
 import { AlertLevels } from '$lib/components/notifications/enums/alertLevels';
-import { pushNotification } from '$lib/components/notifications/notificationStore';
-import { setToken } from '$lib/userStore';
+import { pushNotification } from '$lib/stores/notificationStore';
+import { clearToken, setToken } from '$lib/stores/userStore';
 import http from '../http.helper';
 import { isTranslationKey } from '../translations.helper';
 import type { LoginUserDto, RegisterUserDto } from './dto/auth.dto';
@@ -16,6 +16,7 @@ export function registerUser(data: RegisterUserDto) {
 				? e.response.data.message.toLowerCase()
 				: 'unexpected_error';
 
+			clearToken();
 			pushNotification(errorKey, AlertLevels.ERROR);
 		});
 }
@@ -31,6 +32,7 @@ export function loginUser(data: LoginUserDto) {
 				? e.response.data.message.toLowerCase()
 				: 'unexpected_error';
 
+			clearToken();
 			pushNotification(errorKey, AlertLevels.ERROR);
 		});
 }

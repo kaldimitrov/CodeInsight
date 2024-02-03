@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { environment } from '../configuration/environment';
-import { token } from '$lib/userStore';
+import { token } from '$lib/stores/userStore';
 
 const http = axios.create({
 	baseURL: environment.apiUrl

@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import FileObject from './FileObject.svelte';
-	import { currentFile, fileSystem, setFileSystem, storeCurrentState } from './editorStore';
+	import {
+		currentFile,
+		fileSystem,
+		setFileSystem,
+		storeCurrentState
+	} from '$lib/stores/editorStore';
 	import { v4 as uuidv4 } from 'uuid';
 	import { FileTypes } from './enums/fileTypes';
 

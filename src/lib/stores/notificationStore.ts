@@ -1,5 +1,6 @@
 import { signal } from '@preact/signals-core';
-import type { AlertLevels } from './enums/alertLevels';
+import type { AlertLevels } from '$lib/components/notifications/enums/alertLevels';
+
 export class Notification {
 	id: number;
 	text: string;
@@ -19,17 +20,6 @@ export const notifications = signal([] as Notification[]);
 export function pushNotification(text: string, level: AlertLevels, duration: number = 5000) {
 	const notification = new Notification(text, level, duration);
 	notifications.value = [...notifications.value, notification];
-
-	setTimeout(() => {
-		const element = document.getElementById(`notification-${notification.id}`);
-		if (element) {
-			element.style.setProperty('opacity', '0');
-
-			element.ontransitionend = () => {
-				removeNotification(notification.id);
-			};
-		}
-	}, notification.duration);
 }
 
 export function removeNotification(id: number) {

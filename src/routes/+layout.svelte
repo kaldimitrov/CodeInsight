@@ -4,9 +4,9 @@
 	import { theme } from '$lib/theme/themeStore';
 	import type { Themes } from '$lib/theme/enums/themes';
 	import { connectSocket } from '../helpers/socket.helper';
-	import { setToken, token } from '$lib/userStore';
+	import { setToken, token } from '$lib/stores/userStore';
 	import '../app.css';
-	import { addMessages, init, getLocaleFromNavigator } from 'svelte-i18n';
+	import { addMessages, getLocaleFromNavigator, init } from 'svelte-i18n';
 	import en from '../configuration/translations/en.json';
 
 	onMount(async () => {
@@ -19,13 +19,13 @@
 			document.documentElement.setAttribute('data-theme', value);
 		});
 
-		connectSocket();
 		addMessages('en', en);
 
 		init({
 			fallbackLocale: 'en',
 			initialLocale: getLocaleFromNavigator()
 		});
+		connectSocket();
 	});
 </script>
 

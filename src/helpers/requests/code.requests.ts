@@ -1,5 +1,5 @@
 import { AlertLevels } from '$lib/components/notifications/enums/alertLevels';
-import { pushNotification } from '$lib/components/notifications/notificationStore';
+import { pushNotification } from '$lib/stores/notificationStore';
 import http from '../http.helper';
 import { isTranslationKey } from '../translations.helper';
 import type { CodeSubmitDto } from './dto/code.dto';

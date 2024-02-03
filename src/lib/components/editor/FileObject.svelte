@@ -2,7 +2,7 @@
 	import FileIcon from '../../../assets/icons/File.svelte';
 	import FolderIcon from '../../../assets/icons/Folder.svelte';
 	import TrashIcon from '../../../assets/icons/Trash.svelte';
-	import { currentFile, setCurrentFile, storeCurrentState } from './editorStore.js';
+	import { currentFile, setCurrentFile, storeCurrentState } from '$lib/stores/editorStore';
 	import { FileTypes } from './enums/fileTypes.js';
 
 	export let file: any;

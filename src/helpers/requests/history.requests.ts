@@ -1,12 +1,12 @@
 import { AlertLevels } from '$lib/components/notifications/enums/alertLevels';
-import { pushNotification } from '$lib/components/notifications/notificationStore';
+import { pushNotification } from '$lib/stores/notificationStore';
 import http from '../http.helper';
 import { buildQuery } from '../query.helper';
 import { isTranslationKey } from '../translations.helper';
 import type { GetHistoryDto } from './dto/history.dto';
 
 export function getHistory(params: GetHistoryDto) {
-    return http.get(`history/?${buildQuery(params)}`).catch((e: any) => {
+	return http.get(`history/?${buildQuery(params)}`).catch((e: any) => {
 		const errorKey = isTranslationKey(e.response?.data?.message?.toLowerCase())
 			? e.response.data.message.toLowerCase()
 			: 'unexpected_error';
