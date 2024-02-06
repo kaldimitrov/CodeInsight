@@ -2,11 +2,14 @@
 	import FileIcon from '../../../assets/icons/File.svelte';
 	import FolderIcon from '../../../assets/icons/Folder.svelte';
 	import TrashIcon from '../../../assets/icons/Trash.svelte';
-	import { currentFile, setCurrentFile, storeCurrentState } from '$lib/stores/editorStore';
+	import { currentFile, fileSystem, setCurrentFile, storeCurrentState } from '$lib/stores/editorStore';
 	import { FileTypes } from './enums/fileTypes.js';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	export let file: any;
 
+	let isHovering = false;
 	let editingLabel = false;
 	let newLabel = file.label;
 
@@ -25,38 +28,38 @@
 			handleBlur();
 		}
 	}
-
-	let isHovering = false;
 </script>
 
 {#if file.type === FileTypes.FOLDER}
-	<li on:mouseenter={() => (isHovering = true)} on:mouseleave={() => (isHovering = false)}>
+	<li>
 		<details open>
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<summary class="text-base flex flex-row" on:dblclick={handleDoubleClick}>
-				<FolderIcon />
-				{#if editingLabel}
-					<!-- svelte-ignore a11y-autofocus -->
-					<input
-						class="outline-none"
-						type="text"
-						bind:value={newLabel}
-						on:blur={handleBlur}
-						on:keydown={handleKeyDown}
-						autofocus
-					/>
-				{:else}
-					{file.label}
-				{/if}
+			<summary on:mouseenter={() => (isHovering = true)} on:mouseleave={() => (isHovering = false)}  class="text-base flex flex-row justify-between items-center px-5" on:dblclick={handleDoubleClick}>
+				<div class="flex flex-row items-center">
+					<FolderIcon />
+					{#if editingLabel}
+						<!-- svelte-ignore a11y-autofocus -->
+						<input
+							class="outline-none"
+							type="text"
+							bind:value={newLabel}
+							on:blur={handleBlur}
+							on:keydown={handleKeyDown}
+							autofocus
+						/>
+					{:else}
+						<span class="ml-1">{file.label}</span>
+					{/if}
+				</div>
 				{#if isHovering}
-					<button class="flex-none grow-on-hover">
+					<button class="flex-none grow-on-hover" on:click={() => dispatch('delete', file)}>
 						<TrashIcon />
 					</button>
 				{/if}
 			</summary>
 			<ul>
 				{#each file.children as child}
-					<svelte:self file={child} />
+					<svelte:self on:delete file={child} />
 				{/each}
 			</ul>
 		</details>
@@ -67,7 +70,7 @@
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<summary
-			class={`text-base flex flex-row justify-between items-center ${
+			class={`text-base flex flex-row justify-between items-center px-5 ${
 				file.uuid == $currentFile ? 'text-primary' : ''
 			}`}
 			on:dblclick={handleDoubleClick}
@@ -86,11 +89,11 @@
 						autofocus
 					/>
 				{:else}
-					<span class="ml-2">{file.label}</span>
+					<span class="ml-1">{file.label}</span>
 				{/if}
 			</div>
 			{#if isHovering}
-				<button class="flex-none grow-on-hover">
+				<button class="flex-none grow-on-hover" on:click={() => dispatch('delete', file)}>
 					<TrashIcon />
 				</button>
 			{/if}
@@ -99,6 +102,11 @@
 {/if}
 
 <style>
+	summary::after {
+		position: absolute;
+		left: 0;
+	}
+
 	.grow-on-hover {
 		transition: transform 0.2s ease;
 	}

@@ -4,11 +4,13 @@
 	import {
 		currentFile,
 		fileSystem,
+		setCurrentFile,
 		setFileSystem,
 		storeCurrentState
 	} from '$lib/stores/editorStore';
 	import { v4 as uuidv4 } from 'uuid';
 	import { FileTypes } from './enums/fileTypes';
+	import { FileModel } from '$lib/models/file.model';
 
 	let fileMap: any;
 
@@ -17,7 +19,7 @@
 		fileMap = buildPathMap($fileSystem);
 	});
 
-	function buildPathMap(items: any, map: any = {}) {
+	function buildPathMap(items: FileModel[], map: any = {}) {
 		items.forEach((item: any) => {
 			if (item.uuid) {
 				map[item.uuid as string] = item;
@@ -29,53 +31,81 @@
 		return map;
 	}
 
-	function createFileWithPath(path: string, content: string) {
-		const levels = path.split('/');
+	function handleDeleteEvent(event: CustomEvent<any>) {
+		setCurrentFile('');
+		deleteItemByUuid($fileSystem, event.detail.uuid);
+		setFileSystem($fileSystem);
+		storeCurrentState();
+		fileMap = buildPathMap($fileSystem);
+	}
+
+	function deleteItemByUuid(items: any, uuidToDelete: string) {
+		const index = items.findIndex((item: any) => item.uuid === uuidToDelete);
+
+		if (index !== -1) {
+			items.splice(index, 1);
+			return;
+		}
+
+		for (const item of items) {
+			if (item.type == FileTypes.FOLDER && item.children) {
+				deleteItemByUuid(item.children, uuidToDelete);
+			}
+		}
+	}
+
+	
+	function createPath(path: string, type: FileTypes) {
+		const parts = path.split('/').filter(p => p);
 		let currentLevel = $fileSystem;
 
-		for (let i = 0; i < levels.length; i++) {
-			const segment = levels[i];
-			const isFile = i === levels.length - 1;
-			let found = currentLevel.find((item: any) => item.label === segment);
-
-			if (segment === '') continue;
+		for (let i = 0; i < parts.length; i++) {
+			const part = parts[i];
+			let found = currentLevel.find((item: FileModel) => item.label === part);
 
 			if (!found) {
-				if (isFile) {
-					found = {
-						uuid: uuidv4(),
-						label: segment,
-						type: FileTypes.FILE,
-						content: content
-					};
-					currentLevel.push(found);
-				} else {
-					found = {
-						label: segment,
+				if (i < parts.length - 1 || type === FileTypes.FOLDER) {
+					const newFolder: FileModel = {
+						uuid: crypto.randomUUID(),
+						label: part,
 						type: FileTypes.FOLDER,
-						children: []
+						children: [],
 					};
-					currentLevel.push(found);
-					currentLevel = found.children;
+					currentLevel.push(newFolder);
+					currentLevel = newFolder.children!;
+				} else {
+					const newFile: FileModel = {
+						uuid: crypto.randomUUID(),
+						label: part,
+						type: FileTypes.FILE,
+						content: '',
+					};
+					currentLevel.push(newFile);
 				}
-			} else if (found.type === 'folder') {
-				currentLevel = found.children;
+			} else {
+				if (found.type === FileTypes.FOLDER) {
+					currentLevel = found.children!;
+				} else {
+					throw new Error('Path leads to a file before the end of the provided path.');
+				}
 			}
 		}
 	}
 </script>
 
-<div class="flex border rounded-lg overflow-hidden container min-h-96">
-	<ul class="menu menu-xs bg-base-200 rounded-lg flex-none w-full max-w-xs">
-		{#each $fileSystem as file}
-			<FileObject {file} />
-		{/each}
-	</ul>
-	{#if $currentFile}
-		<textarea
-			class="textarea flex-1 resize-none"
-			bind:value={fileMap[$currentFile].content}
-			on:input={() => storeCurrentState()}
-		/>
-	{/if}
-</div>
+{#key fileMap}
+	<div class="flex border rounded-lg overflow-hidden container min-h-96">
+		<ul class="menu menu-xs bg-base-200 rounded-lg flex-none w-full max-w-xs">
+			{#each $fileSystem as file}
+				<FileObject on:delete={handleDeleteEvent} {file} />
+			{/each}
+		</ul>
+		{#if $currentFile && fileMap[$currentFile]}
+			<textarea
+				class="textarea flex-1 resize-none"
+				bind:value={fileMap[$currentFile].content}
+				on:input={() => storeCurrentState()}
+			/>
+		{/if}
+	</div>
+{/key}
