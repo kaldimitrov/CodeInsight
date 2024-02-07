@@ -2,16 +2,47 @@
 	import FileIcon from '../../../assets/icons/File.svelte';
 	import FolderIcon from '../../../assets/icons/Folder.svelte';
 	import TrashIcon from '../../../assets/icons/Trash.svelte';
-	import { currentFile, fileSystem, setCurrentFile, storeCurrentState } from '$lib/stores/editorStore';
+	import {
+		currentFile,
+		fileSystem,
+		setCurrentFile,
+		storeCurrentState
+	} from '$lib/stores/editorStore';
 	import { FileTypes } from './enums/fileTypes.js';
 	import { createEventDispatcher } from 'svelte';
+	import FolderCreate from '../../../assets/icons/FolderCreate.svelte';
+	import FileCreate from '../../../assets/icons/FileCreate.svelte';
+	import Modal from '../modal/Modal.svelte';
 	const dispatch = createEventDispatcher();
 
 	export let file: any;
+	export let path: string;
 
 	let isHovering = false;
 	let editingLabel = false;
 	let newLabel = file.label;
+	const modal = {
+		title: '',
+		input: '',
+		show: false,
+		type: FileTypes.FILE
+	};
+
+	function openModal(fileType: FileTypes) {
+		modal.type = fileType;
+		modal.title = `Create New ${fileType === FileTypes.FOLDER ? 'Folder' : 'File'}`;
+		modal.input = path;
+		modal.show = true;
+	}
+
+	function handleModalSubmit(event: CustomEvent<any>) {
+		const inputValue = event.detail;
+		dispatch('create', {
+			type: modal.type,
+			name: inputValue
+		});
+		modal.show = false;
+	}
 
 	function handleDoubleClick() {
 		editingLabel = true;
@@ -30,11 +61,20 @@
 	}
 </script>
 
+{#if modal.show}
+	<Modal title={modal.title} inputValue={modal.input} on:submit={handleModalSubmit} />
+{/if}
+
 {#if file.type === FileTypes.FOLDER}
 	<li>
 		<details open>
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<summary on:mouseenter={() => (isHovering = true)} on:mouseleave={() => (isHovering = false)}  class="text-base flex flex-row justify-between items-center px-5" on:dblclick={handleDoubleClick}>
+			<summary
+				on:mouseenter={() => (isHovering = true)}
+				on:mouseleave={() => (isHovering = false)}
+				class="text-base flex flex-row justify-between items-center px-5"
+				on:dblclick={handleDoubleClick}
+			>
 				<div class="flex flex-row items-center">
 					<FolderIcon />
 					{#if editingLabel}
@@ -52,14 +92,22 @@
 					{/if}
 				</div>
 				{#if isHovering}
-					<button class="flex-none grow-on-hover" on:click={() => dispatch('delete', file)}>
-						<TrashIcon />
-					</button>
+					<div class="flex gap-x-2">
+						<button class="icon" on:click={() => openModal(FileTypes.FOLDER)}>
+							<FolderCreate />
+						</button>
+						<button class="icon" on:click={() => openModal(FileTypes.FILE)}>
+							<FileCreate />
+						</button>
+						<button class="icon" on:click={() => dispatch('delete', file)}>
+							<TrashIcon />
+						</button>
+					</div>
 				{/if}
 			</summary>
 			<ul>
 				{#each file.children as child}
-					<svelte:self on:delete file={child} />
+					<svelte:self on:delete on:create file={child} path={`${path}/${child.label}`} />
 				{/each}
 			</ul>
 		</details>
@@ -105,13 +153,5 @@
 	summary::after {
 		position: absolute;
 		left: 0;
-	}
-
-	.grow-on-hover {
-		transition: transform 0.2s ease;
-	}
-
-	.grow-on-hover:hover {
-		transform: scale(1.25);
 	}
 </style>

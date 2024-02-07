@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.icon {
+    @apply flex-none grow-on-hover;
+}
+
+.grow-on-hover {
+    transition: transform 0.2s ease;
+}
+
+.grow-on-hover:hover {
+    transform: scale(1.25);
+}

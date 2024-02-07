@@ -13,6 +13,8 @@
 	import type { FileModel } from '$lib/models/file.model';
 	import { pushNotification } from '$lib/stores/notificationStore';
 	import { AlertLevels } from '../notifications/enums/alertLevels';
+	import FolderCreate from '../../../assets/icons/FolderCreate.svelte';
+	import FileCreate from '../../../assets/icons/FileCreate.svelte';
 
 	let fileMap: any;
 
@@ -31,6 +33,13 @@
 			}
 		});
 		return map;
+	}
+
+	function handleCreate(event: CustomEvent<any>) {
+		createPath(event.detail.name, event.detail.type);
+		setFileSystem($fileSystem);
+		storeCurrentState();
+		fileMap = buildPathMap($fileSystem);
 	}
 
 	function handleDeleteEvent(event: CustomEvent<any>) {
@@ -87,10 +96,25 @@
 </script>
 
 {#key fileMap}
-	<div class="flex border rounded-lg overflow-hidden container min-h-96">
+	<div class="flex border rounded-lg overflow-hidden container min-h-96 min-w-full">
 		<ul class="menu menu-xs bg-base-200 rounded-lg flex-none w-full max-w-xs">
+			<header class="h-6">
+				<div class="flex gap-x-2">
+					<button class="icon" on:click={() => {}}>
+						<FolderCreate />
+					</button>
+					<button class="icon" on:click={() => {}}>
+						<FileCreate />
+					</button>
+				</div>
+			</header>
 			{#each $fileSystem as file}
-				<FileObject on:delete={handleDeleteEvent} {file} />
+				<FileObject
+					on:delete={handleDeleteEvent}
+					on:create={handleCreate}
+					{file}
+					path={file.label}
+				/>
 			{/each}
 		</ul>
 		{#if $currentFile && fileMap[$currentFile]}
