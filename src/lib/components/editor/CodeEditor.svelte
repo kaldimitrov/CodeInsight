@@ -15,8 +15,17 @@
 	import { AlertLevels } from '../notifications/enums/alertLevels';
 	import FolderCreate from '../../../assets/icons/FolderCreate.svelte';
 	import FileCreate from '../../../assets/icons/FileCreate.svelte';
+	import EditableText from '../editableText/EditableText.svelte';
+	import Modal from '../modal/Modal.svelte';
 
 	let fileMap: any;
+	let projectName: string = 'Project Name';
+	const modal = {
+		title: '',
+		input: '',
+		show: false,
+		type: FileTypes.FILE
+	};
 
 	onMount(() => {
 		setFileSystem(JSON.parse(localStorage.getItem('fileSystem') || '[]'));
@@ -93,18 +102,44 @@
 			}
 		});
 	}
+
+	function openModal(fileType: FileTypes) {
+		modal.type = fileType;
+		modal.title = `Create New ${fileType === FileTypes.FOLDER ? 'Folder' : 'File'}`;
+		modal.input = '';
+		modal.show = true;
+	}
+
+	function handleModalSubmit(event: CustomEvent<any>) {
+		const inputValue = event.detail;
+		createPath(inputValue, modal.type);
+		modal.show = false;
+
+		setFileSystem($fileSystem);
+		storeCurrentState();
+		fileMap = buildPathMap($fileSystem);
+	}
+
+	function handleTextChange(event: CustomEvent<any>) {
+		projectName = event.detail.newText;
+	}
 </script>
 
-{#key fileMap}
-	<div class="flex border rounded-lg overflow-hidden container min-h-96 min-w-full">
+{#if modal.show}
+	<Modal title={modal.title} inputValue={modal.input} on:submit={handleModalSubmit} />
+{/if}
+
+<div class="flex border rounded-lg overflow-hidden container min-h-96 min-w-full">
+	{#key fileMap}
 		<ul class="menu menu-xs bg-base-200 rounded-lg flex-none w-full max-w-xs">
-			<header class="h-6">
+			<header class="h-8 flex justify-between">
+				<EditableText classList='ml-1 text-lg' text={projectName} on:change={handleTextChange} />
 				<div class="flex gap-x-2">
-					<button class="icon" on:click={() => {}}>
-						<FolderCreate />
+					<button class="icon" on:click={() => openModal(FileTypes.FOLDER)}>
+						<FolderCreate classList='w-6 h-6' />
 					</button>
-					<button class="icon" on:click={() => {}}>
-						<FileCreate />
+					<button class="icon" on:click={() => openModal(FileTypes.FILE)}>
+						<FileCreate classList='w-6 h-6' />
 					</button>
 				</div>
 			</header>
@@ -117,12 +152,12 @@
 				/>
 			{/each}
 		</ul>
-		{#if $currentFile && fileMap[$currentFile]}
-			<textarea
-				class="textarea flex-1 resize-none"
-				bind:value={fileMap[$currentFile].content}
-				on:input={() => storeCurrentState()}
-			/>
-		{/if}
-	</div>
-{/key}
+	{/key}
+	{#if $currentFile && fileMap[$currentFile]}
+		<textarea
+			class="textarea flex-1 resize-none"
+			bind:value={fileMap[$currentFile].content}
+			on:input={() => storeCurrentState()}
+		/>
+	{/if}
+</div>

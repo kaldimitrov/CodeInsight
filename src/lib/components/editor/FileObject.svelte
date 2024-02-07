@@ -4,7 +4,6 @@
 	import TrashIcon from '../../../assets/icons/Trash.svelte';
 	import {
 		currentFile,
-		fileSystem,
 		setCurrentFile,
 		storeCurrentState
 	} from '$lib/stores/editorStore';
@@ -13,14 +12,13 @@
 	import FolderCreate from '../../../assets/icons/FolderCreate.svelte';
 	import FileCreate from '../../../assets/icons/FileCreate.svelte';
 	import Modal from '../modal/Modal.svelte';
+	import EditableText from '../editableText/EditableText.svelte';
 	const dispatch = createEventDispatcher();
 
 	export let file: any;
 	export let path: string;
 
 	let isHovering = false;
-	let editingLabel = false;
-	let newLabel = file.label;
 	const modal = {
 		title: '',
 		input: '',
@@ -44,20 +42,9 @@
 		modal.show = false;
 	}
 
-	function handleDoubleClick() {
-		editingLabel = true;
-	}
-
-	function handleBlur() {
-		file.label = newLabel;
-		editingLabel = false;
+	function handleTextChange(event: CustomEvent<any>) {
+		file.label = event.detail.newText;
 		storeCurrentState();
-	}
-
-	function handleKeyDown(event: any) {
-		if (event.key === 'Enter') {
-			handleBlur();
-		}
 	}
 </script>
 
@@ -73,23 +60,10 @@
 				on:mouseenter={() => (isHovering = true)}
 				on:mouseleave={() => (isHovering = false)}
 				class="text-base flex flex-row justify-between items-center px-5"
-				on:dblclick={handleDoubleClick}
 			>
 				<div class="flex flex-row items-center">
 					<FolderIcon />
-					{#if editingLabel}
-						<!-- svelte-ignore a11y-autofocus -->
-						<input
-							class="outline-none"
-							type="text"
-							bind:value={newLabel}
-							on:blur={handleBlur}
-							on:keydown={handleKeyDown}
-							autofocus
-						/>
-					{:else}
-						<span class="ml-1">{file.label}</span>
-					{/if}
+					<EditableText classList='ml-1' text={file.label} on:change={handleTextChange} />
 				</div>
 				{#if isHovering}
 					<div class="flex gap-x-2">
@@ -121,24 +95,11 @@
 			class={`text-base flex flex-row justify-between items-center px-5 ${
 				file.uuid == $currentFile ? 'text-primary' : ''
 			}`}
-			on:dblclick={handleDoubleClick}
 			on:click={() => setCurrentFile(file.uuid)}
 		>
 			<div class="flex-grow flex items-center">
 				<FileIcon />
-				{#if editingLabel}
-					<!-- svelte-ignore a11y-autofocus -->
-					<input
-						class="outline-none flex-grow"
-						type="text"
-						bind:value={newLabel}
-						on:blur={handleBlur}
-						on:keydown={handleKeyDown}
-						autofocus
-					/>
-				{:else}
-					<span class="ml-1">{file.label}</span>
-				{/if}
+				<EditableText classList='ml-1' text={file.label} on:change={handleTextChange} />
 			</div>
 			{#if isHovering}
 				<button class="flex-none grow-on-hover" on:click={() => dispatch('delete', file)}>
