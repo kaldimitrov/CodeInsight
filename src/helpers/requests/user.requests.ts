@@ -12,9 +12,9 @@ export function getUserInfo() {
 			setUser(res.data);
 		})
 		.catch((e: any) => {
-			const errorKey = isTranslationKey(e.response?.data?.message?.toLowerCase())
-				? e.response.data.message.toLowerCase()
-				: 'unexpected_error';
+			const errorKey = isTranslationKey(`errors.${e.response?.data?.message?.toLowerCase()}`)
+				? `errors.${e.response.data.message.toLowerCase()}`
+				: 'errors.unexpected_error';
 
 			pushNotification(errorKey, AlertLevels.ERROR);
 		});
@@ -27,9 +27,9 @@ export function deleteUser() {
 			clearUser();
 		})
 		.catch((e: any) => {
-			const errorKey = isTranslationKey(e.response?.data?.message?.toLowerCase())
-				? e.response.data.message.toLowerCase()
-				: 'unexpected_error';
+			const errorKey = isTranslationKey(`errors.${e.response?.data?.message?.toLowerCase()}`)
+				? `errors.${e.response.data.message.toLowerCase()}`
+				: 'errors.unexpected_error';
 
 			pushNotification(errorKey, AlertLevels.ERROR);
 		});
@@ -42,9 +42,9 @@ export function updateUser(data: UpdateUserDto) {
 			setUser(res.data);
 		})
 		.catch((e: any) => {
-			const errorKey = isTranslationKey(e.response?.data?.message?.toLowerCase())
-				? e.response.data.message.toLowerCase()
-				: 'unexpected_error';
+			const errorKey = isTranslationKey(`errors.${e.response?.data?.message?.toLowerCase()}`)
+				? `errors.${e.response.data.message.toLowerCase()}`
+				: 'errors.unexpected_error';
 
 			pushNotification(errorKey, AlertLevels.ERROR);
 		});

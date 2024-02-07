@@ -9,6 +9,8 @@
 	import { addMessages, getLocaleFromNavigator, init } from 'svelte-i18n';
 	import en from '../configuration/translations/en.json';
 
+	let loaded = false;
+
 	onMount(async () => {
 		setToken(localStorage.getItem('token') as string);
 		token.subscribe((newToken: string) => {
@@ -20,14 +22,16 @@
 		});
 
 		addMessages('en', en);
-
 		init({
 			fallbackLocale: 'en',
 			initialLocale: getLocaleFromNavigator()
 		});
+		loaded = true;
 		connectSocket();
 	});
 </script>
 
 <Notification />
-<slot />
+{#if loaded}
+	<slot />
+{/if}

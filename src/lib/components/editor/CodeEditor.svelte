@@ -10,7 +10,9 @@
 	} from '$lib/stores/editorStore';
 	import { v4 as uuidv4 } from 'uuid';
 	import { FileTypes } from './enums/fileTypes';
-	import { FileModel } from '$lib/models/file.model';
+	import type { FileModel } from '$lib/models/file.model';
+	import { pushNotification } from '$lib/stores/notificationStore';
+	import { AlertLevels } from '../notifications/enums/alertLevels';
 
 	let fileMap: any;
 
@@ -54,42 +56,33 @@
 		}
 	}
 
-	
 	function createPath(path: string, type: FileTypes) {
-		const parts = path.split('/').filter(p => p);
-		let currentLevel = $fileSystem;
+		const parts = path.split('/').filter(Boolean);
+		let currentLevel: FileModel[] = $fileSystem;
 
-		for (let i = 0; i < parts.length; i++) {
-			const part = parts[i];
-			let found = currentLevel.find((item: FileModel) => item.label === part);
+		parts.forEach((part, index) => {
+			let found = currentLevel.find((item) => item.label === part);
 
 			if (!found) {
-				if (i < parts.length - 1 || type === FileTypes.FOLDER) {
-					const newFolder: FileModel = {
-						uuid: crypto.randomUUID(),
-						label: part,
-						type: FileTypes.FOLDER,
-						children: [],
-					};
-					currentLevel.push(newFolder);
-					currentLevel = newFolder.children!;
-				} else {
-					const newFile: FileModel = {
-						uuid: crypto.randomUUID(),
-						label: part,
-						type: FileTypes.FILE,
-						content: '',
-					};
-					currentLevel.push(newFile);
+				const isFolder = index < parts.length - 1 || type === FileTypes.FOLDER;
+				const newItem: FileModel = {
+					uuid: uuidv4(),
+					label: part,
+					type: isFolder ? FileTypes.FOLDER : FileTypes.FILE,
+					...(isFolder && { children: [] })
+				};
+
+				currentLevel.push(newItem);
+
+				if (isFolder) {
+					currentLevel = newItem.children!;
 				}
+			} else if (found.type === FileTypes.FOLDER) {
+				currentLevel = found.children!;
 			} else {
-				if (found.type === FileTypes.FOLDER) {
-					currentLevel = found.children!;
-				} else {
-					throw new Error('Path leads to a file before the end of the provided path.');
-				}
+				pushNotification('errors.invalid_file_path', AlertLevels.ERROR);
 			}
-		}
+		});
 	}
 </script>
 

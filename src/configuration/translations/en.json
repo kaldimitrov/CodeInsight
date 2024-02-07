@@ -1,11 +1,19 @@
 {
-	"invalid_user_error": "Invalid user",
-	"email_taken_error": "Email already taken",
-	"cannot_create_user_error": "Cannot create user",
-	"invalid_credentials_error": "Invalid credentials",
-	"max_files_error": "Max files limit reached",
-	"active_containers_limit": "Active containers limit reached",
-	"backend_connection_error": "Error connecting to the server API",
-	"unauthorized": "You need to be logged in to perform this action",
-	"unexpected_error": "An unexpected error has occurred"
+	"landing": {
+		"title": "CodeInsight",
+		"description": "Welcome to CodeInsight, the ultimate destination for code execution and analysis. Our platform is designed with developers in mind, offering unparalleled support for a wide range of programming languages. With our intuitive interface and powerful features, you can quickly execute your code and analyze its performance, identifying opportunities for optimization and improvement",
+		"get_started": "Get Started"
+	},
+	"errors": {
+		"invalid_user_error": "Invalid user",
+		"email_taken_error": "Email already taken",
+		"cannot_create_user_error": "Cannot create user",
+		"invalid_credentials_error": "Invalid credentials",
+		"max_files_error": "Max files limit reached",
+		"active_containers_limit": "Active containers limit reached",
+		"backend_connection_error": "Error connecting to the server API",
+		"unauthorized": "You need to be logged in to perform this action",
+		"unexpected_error": "An unexpected error has occurred",
+		"invalid_file_path": "Invalid file path provided"
+	}
 }
