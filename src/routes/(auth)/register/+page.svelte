@@ -1,5 +1,6 @@
 <script lang="ts">
 	import hero from '../../../assets/images/login_hero.jpg';
+	import Logo from '../../../assets/icons/Logo.svelte';
 	import { t } from 'svelte-i18n';
 	import { registerUser } from '../../../helpers/requests/auth.requests';
 	import { goto } from '$app/navigation';
@@ -28,16 +29,23 @@
 		event.preventDefault();
 
 		if (form.password !== form.confirmPassword) {
-			return pushNotification('errors.passwords_do_not_match', AlertLevels.ERROR)
+			return pushNotification('errors.passwords_do_not_match', AlertLevels.ERROR);
 		}
 
 		if (!validatePassword(form.password)) {
-			return pushNotification('errors.invalid_password', AlertLevels.ERROR)
+			return pushNotification('errors.invalid_password', AlertLevels.ERROR);
 		}
 
-		if (await registerUser({firstName: form.firstName, lastName: form.lastName, email: form.email, password: form.password})) {
-			return goto('/editor')
-		}	
+		if (
+			await registerUser({
+				firstName: form.firstName,
+				lastName: form.lastName,
+				email: form.email,
+				password: form.password
+			})
+		) {
+			return goto('/editor');
+		}
 	}
 </script>
 
@@ -51,7 +59,10 @@
           flex items-center justify-center"
 	>
 		<div class="w-full h-100">
-			<h1 class="text-4xl font-bold">{$t('title')}</h1>
+			<div class="flex flex-row gap-4 w-11 h-11">
+				<Logo classList="min-w-full min-h-full" />
+				<h1 class="text-4xl font-bold">{$t('title')}</h1>
+			</div>
 			<h1 class="text-xl md:text-2xl font-bold leading-tight mt-12">{$t('auth.register_title')}</h1>
 
 			<form class="mt-6" action="#" on:submit={handleSubmit}>

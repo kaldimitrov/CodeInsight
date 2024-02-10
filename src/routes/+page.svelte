@@ -13,7 +13,9 @@
 				{$t('landing.description')}
 			</p>
 			<div class="flex gap-8 justify-center align-middle">
-				<button on:click={() => goto('/login')} class="btn btn-lg btn-primary">{$t('landing.get_started')}</button>
+				<button on:click={() => goto('/login')} class="btn btn-lg btn-primary"
+					>{$t('landing.get_started')}</button
+				>
 			</div>
 		</div>
 	</div>

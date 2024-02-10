@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { isTokenValid } from '../../../helpers/token.helper';
 	import { goto } from '$app/navigation';
+	import Logo from '../../../assets/icons/Logo.svelte';
 
 	const form = {
 		email: '',
@@ -21,9 +22,9 @@
 	async function handleSubmit(event: any) {
 		event.preventDefault();
 
-		if (await loginUser({email: form.email, password: form.password})) {
-			return goto('/editor')
-		}	
+		if (await loginUser({ email: form.email, password: form.password })) {
+			return goto('/editor');
+		}
 	}
 </script>
 
@@ -37,7 +38,10 @@
           flex items-center justify-center"
 	>
 		<div class="w-full h-100">
-			<h1 class="text-4xl font-bold">{$t('title')}</h1>
+			<div class="flex flex-row gap-4 w-11 h-11">
+				<Logo classList="min-w-full min-h-full" />
+				<h1 class="text-4xl font-bold">{$t('title')}</h1>
+			</div>
 			<h1 class="text-xl md:text-2xl font-bold leading-tight mt-12">{$t('auth.login_title')}</h1>
 
 			<form class="mt-6" action="#" on:submit={handleSubmit}>
