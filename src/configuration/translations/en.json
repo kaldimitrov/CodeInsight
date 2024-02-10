@@ -1,8 +1,21 @@
 {
+	"title": "CodeInsight",
 	"landing": {
-		"title": "CodeInsight",
 		"description": "Welcome to CodeInsight, the ultimate destination for code execution and analysis. Our platform is designed with developers in mind, offering unparalleled support for a wide range of programming languages. With our intuitive interface and powerful features, you can quickly execute your code and analyze its performance, identifying opportunities for optimization and improvement",
 		"get_started": "Get Started"
+	},
+	"auth": {
+		"title": "Login",
+		"email_title": "Email Address",
+		"email_placeholder": "Enter your email address",
+		"password_title": "Password",
+		"password_placeholder": "Enter your password",
+		"login_button": "Log In",
+		"need_account": "Need an account?",
+		"create_account": "Create an account here"
+	},
+	"editor": {
+		"submit": "Submit"
 	},
 	"errors": {
 		"invalid_user_error": "Invalid user",

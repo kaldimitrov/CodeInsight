@@ -2,11 +2,7 @@
 	import FileIcon from '../../../assets/icons/File.svelte';
 	import FolderIcon from '../../../assets/icons/Folder.svelte';
 	import TrashIcon from '../../../assets/icons/Trash.svelte';
-	import {
-		currentFile,
-		setCurrentFile,
-		storeCurrentState
-	} from '$lib/stores/editorStore';
+	import { currentFile, setCurrentFile, storeCurrentState } from '$lib/stores/editorStore';
 	import { FileTypes } from './enums/fileTypes.js';
 	import { createEventDispatcher } from 'svelte';
 	import FolderCreate from '../../../assets/icons/FolderCreate.svelte';
@@ -63,7 +59,7 @@
 			>
 				<div class="flex flex-row items-center">
 					<FolderIcon />
-					<EditableText classList='ml-1' text={file.label} on:change={handleTextChange} />
+					<EditableText classList="ml-1" text={file.label} on:change={handleTextChange} />
 				</div>
 				{#if isHovering}
 					<div class="flex gap-x-2">
@@ -99,7 +95,7 @@
 		>
 			<div class="flex-grow flex items-center">
 				<FileIcon />
-				<EditableText classList='ml-1' text={file.label} on:change={handleTextChange} />
+				<EditableText classList="ml-1" text={file.label} on:change={handleTextChange} />
 			</div>
 			{#if isHovering}
 				<button class="flex-none grow-on-hover" on:click={() => dispatch('delete', file)}>

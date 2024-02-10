@@ -17,6 +17,9 @@
 	import FileCreate from '../../../assets/icons/FileCreate.svelte';
 	import EditableText from '../editableText/EditableText.svelte';
 	import Modal from '../modal/Modal.svelte';
+	import type { FileDto } from '../../../helpers/requests/dto/code.dto';
+	import { t } from 'svelte-i18n';
+	import { mapFilesToDto } from '../../../helpers/entity.helper';
 
 	let fileMap: any;
 	let projectName: string = 'Project Name';
@@ -123,6 +126,11 @@
 	function handleTextChange(event: CustomEvent<any>) {
 		projectName = event.detail.newText;
 	}
+
+	function handleCodeSubmit() {
+		const fileDtos: FileDto[] = mapFilesToDto($fileSystem);
+		console.log(fileDtos);
+	}
 </script>
 
 {#if modal.show}
@@ -133,13 +141,13 @@
 	{#key fileMap}
 		<ul class="menu menu-xs bg-base-200 rounded-lg flex-none w-full max-w-xs">
 			<header class="h-8 flex justify-between">
-				<EditableText classList='ml-1 text-lg' text={projectName} on:change={handleTextChange} />
+				<EditableText classList="ml-1 text-lg" text={projectName} on:change={handleTextChange} />
 				<div class="flex gap-x-2">
 					<button class="icon" on:click={() => openModal(FileTypes.FOLDER)}>
-						<FolderCreate classList='w-6 h-6' />
+						<FolderCreate classList="w-6 h-6" />
 					</button>
 					<button class="icon" on:click={() => openModal(FileTypes.FILE)}>
-						<FileCreate classList='w-6 h-6' />
+						<FileCreate classList="w-6 h-6" />
 					</button>
 				</div>
 			</header>
@@ -161,3 +169,4 @@
 		/>
 	{/if}
 </div>
+<button class="btn btn-md btn-primary" on:click={handleCodeSubmit}>{$t('editor.submit')}</button>
