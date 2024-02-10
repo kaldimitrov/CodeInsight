@@ -1,6 +1,30 @@
 <script lang="ts">
-	import hero from '../../assets/images/login_hero.jpg';
+	import hero from '../../../assets/images/login_hero.jpg';
 	import { t } from 'svelte-i18n';
+	import { loginUser } from '../../../helpers/requests/auth.requests';
+	import { token } from '$lib/stores/userStore';
+	import { onMount } from 'svelte';
+	import { isTokenValid } from '../../../helpers/token.helper';
+	import { goto } from '$app/navigation';
+
+	const form = {
+		email: '',
+		password: ''
+	};
+
+	onMount(() => {
+		if (isTokenValid(token.value)) {
+			return goto('/editor');
+		}
+	});
+
+	async function handleSubmit(event: any) {
+		event.preventDefault();
+
+		if (await loginUser({email: form.email, password: form.password})) {
+			return goto('/editor')
+		}	
+	}
 </script>
 
 <section class="flex flex-col md:flex-row h-screen items-center">
@@ -14,9 +38,9 @@
 	>
 		<div class="w-full h-100">
 			<h1 class="text-4xl font-bold">{$t('title')}</h1>
-			<h1 class="text-xl md:text-2xl font-bold leading-tight mt-12">{$t('auth.title')}</h1>
+			<h1 class="text-xl md:text-2xl font-bold leading-tight mt-12">{$t('auth.login_title')}</h1>
 
-			<form class="mt-6" action="#" method="POST">
+			<form class="mt-6" action="#" on:submit={handleSubmit}>
 				<div>
 					<label for="email" class="block">{$t('auth.email_title')}</label>
 					<input
@@ -25,7 +49,7 @@
 						id=""
 						placeholder={$t('auth.email_placeholder')}
 						class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-primary focus:bg-white focus:outline-none"
-						autocomplete="on"
+						bind:value={form.email}
 						required
 					/>
 				</div>
@@ -37,9 +61,9 @@
 						name=""
 						id=""
 						placeholder={$t('auth.password_placeholder')}
-						minlength="6"
 						class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-primary
                   focus:bg-white focus:outline-none"
+						bind:value={form.password}
 						required
 					/>
 				</div>
@@ -84,7 +108,7 @@
 
 			<p class="mt-8">
 				{$t('auth.need_account')}
-				<a href="#" class="text-primary opacity-80 hover:opacity-100 font-semibold">
+				<a href="/register" class="text-primary opacity-80 hover:opacity-100 font-semibold">
 					{$t('auth.create_account')}
 				</a>
 			</p>

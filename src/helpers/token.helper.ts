@@ -9,7 +9,13 @@ export function isTokenValid(token: string) {
 		return false;
 	}
 
-	const decodedToken = decodeToken(token);
+	let decodedToken;
+	try {
+		decodedToken = decodeToken(token);
+	} catch (e) {
+		return false;
+	}
+
 	if (!decodedToken) {
 		return false;
 	}

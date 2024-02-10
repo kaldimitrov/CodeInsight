@@ -5,14 +5,25 @@
 		"get_started": "Get Started"
 	},
 	"auth": {
-		"title": "Login",
+		"login_title": "Login",
+		"register_title": "Create an account",
 		"email_title": "Email Address",
 		"email_placeholder": "Enter your email address",
 		"password_title": "Password",
 		"password_placeholder": "Enter your password",
+		"confirm_password_title": "Password",
+		"confirm_password_placeholder": "Enter your password again",
 		"login_button": "Log In",
+		"register_button": "Register",
 		"need_account": "Need an account?",
-		"create_account": "Create an account here"
+		"have_account": "Already have an account?",
+		"create_account": "Create an account here",
+		"login_account": "Log in here",
+		"first_name_title": "First Name",
+		"first_name_placeholder": "Enter your first name",
+		"last_name_title": "Last Name",
+		"last_name_placeholder": "Enter your last name",
+		"password_rules": "Your password must contain one digit from 0 to 9, one lowercase letter, one uppercase letter, one special character, no spaces, and must be 8-32 characters long."
 	},
 	"editor": {
 		"submit": "Submit"
@@ -27,6 +38,8 @@
 		"backend_connection_error": "Error connecting to the server API",
 		"unauthorized": "You need to be logged in to perform this action",
 		"unexpected_error": "An unexpected error has occurred",
-		"invalid_file_path": "Invalid file path provided"
+		"invalid_file_path": "Invalid file path provided",
+		"invalid_password": "Your password does not meet the requirements",
+		"passwords_do_not_match": "Passwords do not match"
 	}
 }

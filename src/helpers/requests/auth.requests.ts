@@ -10,6 +10,7 @@ export function registerUser(data: RegisterUserDto) {
 		.post('users/register', data)
 		.then((res) => {
 			setToken(res.data.token);
+			return true;
 		})
 		.catch((e: any) => {
 			const errorKey = isTranslationKey(`errors.${e.response?.data?.message?.toLowerCase()}`)
@@ -26,6 +27,7 @@ export function loginUser(data: LoginUserDto) {
 		.post('users/login', data)
 		.then((res) => {
 			setToken(res.data.token);
+			return true;
 		})
 		.catch((e: any) => {
 			const errorKey = isTranslationKey(`errors.${e.response?.data?.message?.toLowerCase()}`)

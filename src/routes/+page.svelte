@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import background from '../assets/images/landing_background.jpg';
 	import { t } from 'svelte-i18n';
 </script>
@@ -12,7 +13,7 @@
 				{$t('landing.description')}
 			</p>
 			<div class="flex gap-8 justify-center align-middle">
-				<button class="btn btn-lg btn-primary">{$t('landing.get_started')}</button>
+				<button on:click={() => goto('/login')} class="btn btn-lg btn-primary">{$t('landing.get_started')}</button>
 			</div>
 		</div>
 	</div>

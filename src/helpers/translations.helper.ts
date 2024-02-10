@@ -14,5 +14,20 @@ export function isTranslationKey(key: string) {
 	});
 	unsubscribeDictionary();
 
-	return currentDictionary && key in currentDictionary;
+	return hasNestedProperty(currentDictionary, key);
+}
+
+function hasNestedProperty(obj: any, path: string) {
+	const keys = path.split('.');
+	let current = obj;
+
+	for (let key of keys) {
+		if (key in current) {
+			current = current[key];
+		} else {
+			return false;
+		}
+	}
+
+	return true;
 }
