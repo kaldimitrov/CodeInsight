@@ -141,7 +141,7 @@
 	{#key fileMap}
 		<ul class="menu menu-xs bg-base-200 rounded-lg flex-none w-full max-w-xs">
 			<header class="h-8 flex justify-between">
-				<EditableText classList="ml-1 text-lg" text={projectName} on:change={handleTextChange} />
+				<EditableText classList="ml-1 text-lg" text={projectName} maxlength={20} on:change={handleTextChange} />
 				<div class="flex gap-x-2">
 					<button class="icon" on:click={() => openModal(FileTypes.FOLDER)}>
 						<FolderCreate classList="w-6 h-6" />

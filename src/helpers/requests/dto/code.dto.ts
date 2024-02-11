@@ -4,6 +4,7 @@ export interface FileDto {
 }
 
 export interface CodeSubmitDto {
+	name: string;
 	files: FileDto[];
 	language: string;
 	version: string;

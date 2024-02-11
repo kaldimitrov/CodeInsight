@@ -25,6 +25,18 @@
 		"last_name_placeholder": "Enter your last name",
 		"password_rules": "Your password must contain one digit from 0 to 9, one lowercase letter, one uppercase letter, one special character, no spaces, and must be 8-32 characters long."
 	},
+	"history": {
+		"table_name": "Name",
+		"table_status": "Status",
+		"table_language": "Language",
+		"table_execution_time": "Execution Time",
+		"table_max_cpu": "Max CPU",
+		"table_max_memory": "Max Memory",
+		"table_date": "Date",
+		"table_actions": "Actions",
+		"action_delete": "Delete",
+		"action_view": "View"
+	},
 	"editor": {
 		"submit": "Submit"
 	},

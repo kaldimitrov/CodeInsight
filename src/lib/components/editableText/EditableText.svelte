@@ -3,6 +3,7 @@
 
 	export let text: string = '';
 	export let classList = '';
+	export let maxlength: number = Infinity;
 	let editing = false;
 	let inputElement: HTMLInputElement;
 
@@ -36,6 +37,7 @@
 		bind:this={inputElement}
 		class={`outline-none ${classList}`}
 		type="text"
+		maxlength={maxlength}
 		bind:value={text}
 		on:blur={handleBlur}
 		on:keydown={handleKeyDown}

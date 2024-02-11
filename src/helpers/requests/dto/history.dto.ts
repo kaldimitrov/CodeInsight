@@ -2,6 +2,7 @@ import type { ExecutionStatus } from '../enums/executionStatus';
 import { OrderTypes, OrderOptions } from '../enums/orderOptions';
 
 export class GetHistoryDto {
+	name?: string;
 	language?: string;
 	status?: ExecutionStatus;
 
