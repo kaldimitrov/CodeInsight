@@ -35,7 +35,9 @@
 		"table_date": "Date",
 		"table_actions": "Actions",
 		"action_delete": "Delete",
-		"action_view": "View"
+		"action_view": "View",
+		"prev": "Prev",
+		"next": "Next"
 	},
 	"editor": {
 		"submit": "Submit"

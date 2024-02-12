@@ -2,6 +2,8 @@ import type { ExecutionStatus } from '../enums/executionStatus';
 import { OrderTypes, OrderOptions } from '../enums/orderOptions';
 
 export class GetHistoryDto {
+	[key: string]: any;
+
 	name?: string;
 	language?: string;
 	status?: ExecutionStatus;
@@ -22,5 +24,9 @@ export class GetHistoryDto {
 	orderOptions: OrderOptions = OrderOptions.CREATED_AT;
 
 	page: number = 1;
-	pageSize: number = 20;
+	pageSize: number = 10;
+
+	constructor(obj: Partial<GetHistoryDto>) {
+		Object.assign(this, obj);
+	}
 }
