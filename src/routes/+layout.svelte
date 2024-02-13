@@ -3,7 +3,6 @@
 	import Notification from '$lib/components/notifications/Notification.svelte';
 	import { theme } from '$lib/theme/themeStore';
 	import type { Themes } from '$lib/theme/enums/themes';
-	import { connectSocket } from '../helpers/socket.helper';
 	import { setToken, token } from '$lib/stores/userStore';
 	import '../app.css';
 	import { addMessages, getLocaleFromNavigator, init } from 'svelte-i18n';
@@ -27,11 +26,10 @@
 			initialLocale: getLocaleFromNavigator()
 		});
 		loaded = true;
-		connectSocket();
 	});
 </script>
 
-<Notification />
 {#if loaded}
+	<Notification />
 	<slot />
 {/if}

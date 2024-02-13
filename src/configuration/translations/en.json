@@ -4,6 +4,11 @@
 		"description": "Welcome to CodeInsight, the ultimate destination for code execution and analysis. Our platform is designed with developers in mind, offering unparalleled support for a wide range of programming languages. With our intuitive interface and powerful features, you can quickly execute your code and analyze its performance, identifying opportunities for optimization and improvement",
 		"get_started": "Get Started"
 	},
+	"navbar": {
+		"home": "Home",
+		"history": "History",
+		"editor": "Editor"
+	},
 	"auth": {
 		"login_title": "Login",
 		"register_title": "Create an account",
