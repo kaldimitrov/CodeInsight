@@ -39,6 +39,21 @@
 		"prev": "Prev",
 		"next": "Next"
 	},
+	"filters": {
+		"name": "Name",
+		"status": "Status",
+		"language": "Language",
+		"execution_time": "Execution Time",
+		"max_execution_time": "Max Execution Time",
+		"min_execution_time": "Min Execution Time",
+		"cpu_usage": "CPU Usage",
+		"max_cpu": "Max CPU",
+		"min_cpu": "Min CPU",
+		"memory_usage": "Memory Usage",
+		"max_memory": "Max Memory",
+		"min_memory": "Min Memory",
+		"date": "Date"
+	},
 	"editor": {
 		"submit": "Submit"
 	},

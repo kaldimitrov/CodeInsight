@@ -9,12 +9,32 @@
 	import { formatShortDateTime } from '../../helpers/date.helper';
 	import { GetHistoryDto } from '../../helpers/requests/dto/history.dto';
 	import { pushState } from '$app/navigation';
+	import { ExecutionStatus } from '../../helpers/requests/enums/executionStatus';
+	import { getLanguages } from '../../helpers/requests/code.requests';
 
 	let data: TableHistory[] = [];
 	let currentPage = 1;
 	let pages: number;
 	let pageSize: number;
+	let languages: any[] = [];
+
+	const filters = {
+		name: null,
+		language: null,
+		status: null,
+		min_cpu_usage: null,
+		max_cpu_usage: null,
+		min_memory_usage: null,
+		max_memory_usage: null,
+		min_execution_time: null,
+		max_execution_time: null,
+		date_start: null,
+		date_end: null
+	};
+
 	onMount(async () => {
+		const res = await getLanguages();
+		languages = res?.data.languages;
 		fetchData();
 	});
 
@@ -50,40 +70,159 @@
 		data = res?.data?.data;
 	}
 
-	function handleTableClick(id: string) {
-	}
+	function handleTableClick(id: string) {}
 
 	async function handleDelete(id: string) {
 		await deleteHistory(id);
 		fetchData();
 	}
 
-	function goToPage(page: number) {
-		currentPage = page;		
+	function setSearchParam(key: string, value: any) {
 		const urlParams = new URLSearchParams(window.location.search);
-		urlParams.set('page', String(page));
+		urlParams.set(key, value);
 		const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
 
 		pushState(newUrl, {});
-		fetchData();
 	}
 
 	function nextPage() {
 		if (currentPage < pages) {
-			goToPage(currentPage + 1);
+			currentPage++;
+			setSearchParam('page', currentPage);
+			fetchData();
 		}
 	}
 
 	function prevPage() {
 		if (currentPage > 1) {
-			goToPage(currentPage - 1);
+			currentPage--;
+			setSearchParam('page', currentPage);
+			fetchData();
 		}
+	}
+
+	$: visiblePages = calculateVisiblePages(pages, currentPage);
+
+	function calculateVisiblePages(totalPages: number, current: number) {
+		if (totalPages <= 9) {
+			return Array.from({ length: totalPages }, (_, i) => i + 1);
+		} else {
+			const allPages = Array.from({ length: totalPages }, (_, i) => i + 1);
+			let startPages = allPages.slice(0, 5);
+			let endPages = allPages.slice(-3);
+			if (current <= 5) {
+				return [...startPages, '...', ...endPages];
+			} else if (current >= totalPages - 3) {
+				return [...startPages, '...', ...endPages];
+			} else {
+				let middlePages = [current - 1, current, current + 1];
+				return [...startPages.slice(0, 3), '...', ...middlePages, '...', ...endPages];
+			}
+		}
+	}
+
+	function handleSubmit() {
+		for (const key in filters) {
+			if (filters[key as keyof typeof filters] == null) {
+				continue;
+			}
+
+			setSearchParam(key as keyof typeof filters, filters[key as keyof typeof filters]);
+		}
+		fetchData();
 	}
 </script>
 
-<div class="overflow-x-auto">
-	<table class="table min-w-full">
-		<thead>
+<form class="flex flex-wrap gap-4 p-4">
+	<div class="form-control max-w-64">
+		<label for="name" class="label">
+			<span class="label-text">{$t('filters.name')}</span>
+		</label>
+		<input type="text" maxlength="20" bind:value={filters.name} class="input input-bordered" />
+	</div>
+
+	<div class="form-control">
+		<label for="language" class="label">
+			<span class="label-text">{$t('filters.language')}</span>
+		</label>
+		<select bind:value={filters.language} class="select select-bordered">
+			{#each languages as lang}
+				<option value={lang.key}>{lang.name}</option>
+			{/each}
+		</select>
+	</div>
+
+	<div class="form-control">
+		<label for="status" class="label">
+			<span class="label-text">{$t('filters.status')}</span>
+		</label>
+		<select bind:value={filters.status} class="select select-bordered">
+			{#each Object.values(ExecutionStatus) as option}
+				<option>{option}</option>
+			{/each}
+		</select>
+	</div>
+	<div class="form-control gap-1">
+		<label for="status" class="label">
+			<span class="label-text">{$t('filters.execution_time')}</span>
+		</label>
+		<input
+			type="number"
+			placeholder={$t('filters.min_execution_time')}
+			bind:value={filters.min_execution_time}
+			class="input input-bordered"
+		/>
+		<input
+			type="number"
+			placeholder={$t('filters.max_execution_time')}
+			bind:value={filters.max_execution_time}
+			class="input input-bordered"
+		/>
+	</div>
+	<div class="form-control gap-1">
+		<label for="status" class="label">
+			<span class="label-text">{$t('filters.cpu_usage')}</span>
+		</label>
+		<input
+			type="number"
+			placeholder={$t('filters.min_cpu')}
+			bind:value={filters.min_cpu_usage}
+			class="input input-bordered"
+		/>
+		<input
+			type="number"
+			placeholder={$t('filters.max_cpu')}
+			bind:value={filters.max_cpu_usage}
+			class="input input-bordered"
+		/>
+	</div>
+	<div class="form-control gap-1">
+		<label for="status" class="label">
+			<span class="label-text">{$t('filters.memory_usage')}</span>
+		</label>
+		<input
+			type="number"
+			placeholder={$t('filters.min_memory')}
+			pattern="[0-9]*"
+			bind:value={filters.min_memory_usage}
+			class="input input-bordered"
+		/>
+		<input
+			type="number"
+			pattern="^\d*\.?\d+$"
+			placeholder={$t('filters.max_memory')}
+			bind:value={filters.max_memory_usage}
+			class="input input-bordered"
+		/>
+	</div>
+
+	<div class="form-control w-full">
+	  <button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+</form>
+<div class="overflow-x-auto flex justify-center items-center">
+	<table class="table rounded-lg">
+		<thead class="rounded-lg">
 			<tr>
 				<th class="text-center">{$t('history.table_name')}</th>
 				<th class="text-center">{$t('history.table_status')}</th>
@@ -128,16 +267,28 @@
 		</tbody>
 	</table>
 </div>
-<div class="flex justify-center items-center mt-4 mx-auto gap-4">
-	<button class="btn btn-sm" on:click={prevPage} disabled={currentPage <= 1}>{$t('history.prev')}</button>
-	<div>
-		{#each Array(pages) as _, i}
-			<button
-				class={`btn btn-sm ${currentPage === i + 1 ? 'btn-active' : ''}`}
-				on:click={() => goToPage(i + 1)}>
-				{i + 1}
-			</button>
+<div class="flex justify-center items-center mt-4 mx-auto gap-4 drop-shadow-md">
+	<button class="btn btn-sm" on:click={prevPage} disabled={currentPage <= 1}
+		>{$t('history.prev')}</button
+	>
+	<div class="flex gap-1">
+		{#each visiblePages as page}
+			{#if page === '...'}
+				<button class="btn btn-sm">{page}</button>
+			{:else}
+				<button
+					class={`btn btn-sm ${currentPage === page ? 'btn-active' : ''}`}
+					on:click={() => {
+						setSearchParam('page', Number(page));
+						fetchData();
+					}}
+				>
+					{page}
+				</button>
+			{/if}
 		{/each}
 	</div>
-	<button class="btn btn-sm" on:click={nextPage} disabled={currentPage >= pages}>{$t('history.next')}</button>
+	<button class="btn btn-sm" on:click={nextPage} disabled={currentPage >= pages}
+		>{$t('history.next')}</button
+	>
 </div>
