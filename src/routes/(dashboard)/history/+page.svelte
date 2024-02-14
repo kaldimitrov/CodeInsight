@@ -17,7 +17,7 @@
 	let pageSize: number;
 	let languages: any[] = [];
 
-	const inputFilters = {
+	let inputFilters = {
 		name: null,
 		language: null,
 		status: null,
@@ -79,7 +79,9 @@
 
 		const res = await getHistory(filters);
 
-		currentPage = filters.page;
+		currentPage = Math.min(filters.page, pages || Infinity);
+		setSearchParam('page', Number(currentPage));
+
 		pages = res?.data?.pages;
 		pageSize = res?.data?.pageSize;
 		data = res?.data?.data;
@@ -149,12 +151,34 @@
 		}
 		fetchData();
 	}
+
+	function clearFilters() {
+		inputFilters = {
+			name: null,
+			language: null,
+			status: null,
+			min_cpu_usage: null,
+			max_cpu_usage: null,
+			min_memory_usage: null,
+			max_memory_usage: null,
+			min_execution_time: null,
+			max_execution_time: null,
+			date_start: null,
+			date_end: null
+		};
+		const newUrl = `${window.location.pathname}`;
+		pushState(newUrl, {});
+
+		fetchData();
+	}
 </script>
 
 <div class="card bg-base-100 m-4 shadow-xl">
 	<div class="collapse collapse-arrow">
 		<input type="checkbox" checked />
-		<div class="collapse-title text-xl font-medium flex items-center justify-center">Filters</div>
+		<div class="collapse-title text-xl font-medium flex items-center justify-center">
+			{$t('history.filters_title')}
+		</div>
 		<div class="collapse-content pt-0">
 			<form on:submit|preventDefault|stopPropagation={handleSubmit} class="flex flex-wrap gap-4">
 				<div class="form-control max-w-64">
@@ -245,8 +269,12 @@
 				</div>
 
 				<div class="form-control flex w-full flex-row-reverse gap-4 pt-4">
-					<button type="submit" class="btn btn-success min-w-36">Filter</button>
-					<button type="submit" class="btn btn-error min-w-36">Clear</button>
+					<button type="submit" class="btn btn-success min-w-36"
+						>{$t('history.filter_button')}</button
+					>
+					<button on:click={clearFilters} type="button" class="btn btn-error min-w-36"
+						>{$t('history.clear_button')}</button
+					>
 				</div>
 			</form>
 		</div>
@@ -256,7 +284,7 @@
 	<div class="collapse collapse-arrow">
 		<input type="checkbox" checked />
 		<div class="collapse-title text-xl font-medium flex items-center justify-center">
-			Execution History
+			{$t('history.execution_history_title')}
 		</div>
 		<div class="collapse-content overflow-x-auto">
 			<div class="flex justify-center items-center">
@@ -283,9 +311,9 @@
 									</div>
 								</td>
 								<td class="text-center">{findLanguageName(row.language)}</td>
-								<td class="text-center">{row.execution_time}s</td>
-								<td class="text-center">{row.max_cpu}%</td>
-								<td class="text-center">{row.max_memory}MB</td>
+								<td class="text-center">{row.execution_time || 0}s</td>
+								<td class="text-center">{row.max_cpu || 0}%</td>
+								<td class="text-center">{row.max_memory || 0}MB</td>
 								<td class="text-center">{formatShortDateTime(new Date(row.created_at))}</td>
 								<td class="text-center">
 									<button
