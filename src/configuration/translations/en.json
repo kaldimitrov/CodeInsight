@@ -51,9 +51,9 @@
 	"details": {
 		"id": "ID",
 		"back_button": "Go Back",
-		"details_title": "History Details",
 		"stats_title": "Runtime Statistics",
-		"usage": "Usage"
+		"usage": "Usage",
+		"logs_title": "Logs"
 	},
 	"filters": {
 		"name": "Name",

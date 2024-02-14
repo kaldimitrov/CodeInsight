@@ -10,7 +10,7 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data: any;
-	let history;
+	let history: any;
 	const timeValues: string[] = ['0s'];
 	const cpuValues: number[] = [0];
 	const memoryValues: number[] = [0];
@@ -23,12 +23,19 @@
 		}
 
 		for (const stat of history.stats) {
-			timeValues.push(((history.start_time - stat.time) / 1000).toPrecision(1) + 's');
+			timeValues.push(((stat.time - history.start_time) / 1000).toPrecision(1) + 's');
 			cpuValues.push(stat.cpu);
 			memoryValues.push(stat.memory);
 		}
 
 		Highcharts.chart('stats-container', {
+			chart: {
+				styledMode: false,
+				animation: true
+			},
+			accessibility: {
+				enabled: true
+			},
 			credits: {
 				enabled: false
 			},
@@ -36,28 +43,24 @@
 				categories: timeValues
 			},
 			title: {
-				text: $t('details.stats_title'),
+				text: '',
 				align: 'center'
 			},
-
 			yAxis: {
 				title: {
 					text: $t('details.usage')
 				}
 			},
-
 			legend: {
 				layout: 'vertical',
 				align: 'right',
 				verticalAlign: 'middle'
 			},
-
 			plotOptions: {
 				series: {
 					groupPadding: 0
 				}
 			},
-
 			series: [
 				{
 					name: 'Cpu',
@@ -68,7 +71,6 @@
 					data: memoryValues
 				}
 			],
-
 			responsive: {
 				rules: [
 					{
@@ -108,10 +110,27 @@
 	<div class="collapse collapse-arrow">
 		<input type="checkbox" checked />
 		<div class="collapse-title text-xl font-medium flex items-center justify-center">
-			{$t('details.details_title')}
+			{$t('details.stats_title')}
 		</div>
 		<div class="collapse-content pt-0">
-			<div class="max-w-full shadow-lg rounded-md" id="stats-container"></div>
+			<div class="max-w-full rounded-md" id="stats-container"></div>
 		</div>
 	</div>
 </div>
+{#if history?.logs}
+	<div class="card bg-base-100 m-4 shadow-xl">
+		<div class="collapse collapse-arrow">
+			<input type="checkbox" checked />
+			<div class="collapse-title text-xl font-medium flex items-center justify-center">
+				{$t('details.logs_title')}
+			</div>
+			<div class="collapse-content pt-0">
+				<textarea
+					class="textarea flex-1 min-w-full shadow-lg rounded-md h-full"
+					bind:value={history.logs}
+					readonly
+				/>
+			</div>
+		</div>
+	</div>
+{/if}
