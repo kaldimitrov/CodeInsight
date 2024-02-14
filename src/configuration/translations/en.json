@@ -48,6 +48,11 @@
 		"clear_button": "Clear",
 		"filter_button": "Filter"
 	},
+	"details": {
+		"id": "ID",
+		"back_button": "Go Back",
+		"details_title": "History Details"
+	},
 	"filters": {
 		"name": "Name",
 		"status": "Status",

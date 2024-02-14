@@ -7,7 +7,7 @@
 	import { getExecutionStatusColor } from '../../../helpers/class.helper';
 	import { formatShortDateTime } from '../../../helpers/date.helper';
 	import { GetHistoryDto } from '../../../helpers/requests/dto/history.dto';
-	import { pushState } from '$app/navigation';
+	import { goto, pushState } from '$app/navigation';
 	import { ExecutionStatus } from '../../../helpers/requests/enums/executionStatus';
 	import { getLanguages } from '../../../helpers/requests/code.requests';
 
@@ -87,7 +87,9 @@
 		data = res?.data?.data;
 	}
 
-	function handleTableClick(id: string) {}
+	function handleTableClick(id: string) {
+		goto(`history/${id}`);
+	}
 
 	async function handleDelete(id: string) {
 		await deleteHistory(id);
