@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { getHistoryDetails } from '../../../../helpers/requests/history.requests';
 	import { goto } from '$app/navigation';
@@ -9,8 +9,11 @@
 	Exporting(Highcharts);
 
 	/** @type {import('./$types').PageData} */
-	export let data;
+	export let data: any;
 	let history;
+	const timeValues: string[] = ['0s'];
+	const cpuValues: number[] = [0];
+	const memoryValues: number[] = [0];
 
 	onMount(async () => {
 		const res = await getHistoryDetails(data.id);
@@ -18,27 +21,28 @@
 		if (!history) {
 			goto('/history');
 		}
-		console.log(history);
-		Highcharts.chart('container', {
-			title: {
-				text: 'U.S Solar Employment Growth',
-				align: 'left'
-			},
 
-			subtitle: {
-				text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
-				align: 'left'
+		for (const stat of history.stats) {
+			timeValues.push(((history.start_time - stat.time) / 1000).toPrecision(1) + 's');
+			cpuValues.push(stat.cpu);
+			memoryValues.push(stat.memory);
+		}
+
+		Highcharts.chart('stats-container', {
+			credits: {
+				enabled: false
+			},
+			xAxis: {
+				categories: timeValues
+			},
+			title: {
+				text: $t('details.stats_title'),
+				align: 'center'
 			},
 
 			yAxis: {
 				title: {
-					text: 'Number of Employees'
-				}
-			},
-
-			xAxis: {
-				accessibility: {
-					rangeDescription: 'Range: 2010 to 2020'
+					text: $t('details.usage')
 				}
 			},
 
@@ -50,33 +54,18 @@
 
 			plotOptions: {
 				series: {
-					label: {
-						connectorAllowed: false
-					},
-					pointStart: 2010
+					groupPadding: 0
 				}
 			},
 
 			series: [
 				{
-					name: 'Installation & Developers',
-					data: [43934, 48656, 65165, 81827, 112143, 142383, 171533, 165174, 155157, 161454, 154610]
+					name: 'Cpu',
+					data: cpuValues
 				},
 				{
-					name: 'Manufacturing',
-					data: [24916, 37941, 29742, 29851, 32490, 30282, 38121, 36885, 33726, 34243, 31050]
-				},
-				{
-					name: 'Sales & Distribution',
-					data: [11744, 30000, 16005, 19771, 20185, 24377, 32147, 30912, 29243, 29213, 25663]
-				},
-				{
-					name: 'Operations & Maintenance',
-					data: [null, null, null, null, null, null, null, null, 11164, 11218, 10077]
-				},
-				{
-					name: 'Other',
-					data: [21908, 5548, 8105, 11248, 8989, 11816, 18274, 17300, 13053, 11906, 10073]
+					name: 'Memory',
+					data: memoryValues
 				}
 			],
 
@@ -100,7 +89,7 @@
 	});
 </script>
 
-<div class="card bg-base-100 m-4 shadow-xl">
+<div class="card bg-base-100 m-4 shadow-xl" id="main">
 	<div class="collapse collapse-close">
 		<div class="collapse-title text-xl font-medium flex justify-between pr-4">
 			<div>
@@ -122,7 +111,7 @@
 			{$t('details.details_title')}
 		</div>
 		<div class="collapse-content pt-0">
-			<div class="max-w-full" id="container"></div>
+			<div class="max-w-full shadow-lg rounded-md" id="stats-container"></div>
 		</div>
 	</div>
 </div>
