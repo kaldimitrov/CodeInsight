@@ -8,6 +8,7 @@
 	import { theme } from '$lib/theme/themeStore';
 	import { Themes } from '$lib/theme/enums/themes';
 	import { myNightThemeHighcharts } from './chart.options';
+	import { getExecutionStatusColor } from '../../../../helpers/class.helper';
 
 	Exporting(Highcharts);
 
@@ -41,78 +42,91 @@
 			Highcharts.setOptions(value == Themes.DARK ? myNightThemeHighcharts : defaultOptions);
 			generateChart();
 		});
+
+		Highcharts.setOptions($theme == Themes.DARK ? myNightThemeHighcharts : defaultOptions);
 		generateChart();
 	});
 
 	function generateChart() {
-		Highcharts.chart('stats-container', {
-			chart: {
-				styledMode: false,
-				animation: true
-			},
-			accessibility: {
-				enabled: true
-			},
-			credits: {
-				enabled: false
-			},
-			xAxis: {
-				categories: timeValues
-			},
-			title: {
-				text: '',
-				align: 'center'
-			},
-			yAxis: {
-				title: {
-					text: $t('details.usage')
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'middle'
-			},
-			plotOptions: {
-				series: {
-					groupPadding: 0
-				}
-			},
-			series: [
-				{
-					name: 'Cpu',
-					data: cpuValues
+		if (!history?.stats?.length) {
+			return;
+		}
+
+		try {
+			Highcharts.chart('stats-container', {
+				chart: {
+					styledMode: false,
+					animation: true
 				},
-				{
-					name: 'Memory',
-					data: memoryValues
-				}
-			],
-			responsive: {
-				rules: [
+				accessibility: {
+					enabled: true
+				},
+				credits: {
+					enabled: false
+				},
+				xAxis: {
+					categories: timeValues
+				},
+				title: {
+					text: '',
+					align: 'center'
+				},
+				yAxis: {
+					title: {
+						text: $t('details.usage')
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'middle'
+				},
+				plotOptions: {
+					series: {
+						groupPadding: 0
+					}
+				},
+				series: [
 					{
-						condition: {
-							maxWidth: 500
-						},
-						chartOptions: {
-							legend: {
-								layout: 'horizontal',
-								align: 'center',
-								verticalAlign: 'bottom'
+						name: 'Cpu',
+						data: cpuValues
+					},
+					{
+						name: 'Memory',
+						data: memoryValues
+					}
+				],
+				responsive: {
+					rules: [
+						{
+							condition: {
+								maxWidth: 500
+							},
+							chartOptions: {
+								legend: {
+									layout: 'horizontal',
+									align: 'center',
+									verticalAlign: 'bottom'
+								}
 							}
 						}
-					}
-				]
-			}
-		});
+					]
+				}
+			});
+		} catch (e) {}
 	}
 </script>
 
 <div class="card bg-base-100 m-4 shadow-xl" id="main">
 	<div class="collapse collapse-close">
 		<div class="collapse-title text-xl font-medium flex justify-between pr-4">
-			<div>
-				{`${$t('details.id')}: ${data.id}`}
+			<div class="flex gap-4 w-full">
+				<div
+					class={`h-full aspect-square bg-${getExecutionStatusColor(history?.status)} rounded-full`}
+				></div>
+				<div class="hidden md:flex">
+					{`${$t('details.id')}: ${data.id}`}
+				</div>
 			</div>
 			<button
 				class="btn btn-sm btn-primary"
@@ -123,17 +137,33 @@
 		</div>
 	</div>
 </div>
-<div class="card bg-base-100 m-4 shadow-xl">
-	<div class="collapse collapse-arrow">
-		<input type="checkbox" checked />
-		<div class="collapse-title text-xl font-medium flex items-center justify-center">
-			{$t('details.stats_title')}
-		</div>
-		<div class="collapse-content pt-0">
-			<div class="max-w-full rounded-md" id="stats-container"></div>
+{#if history?.stats?.length}
+	<div class="card bg-base-100 m-4 shadow-xl">
+		<div class="collapse collapse-arrow">
+			<input type="checkbox" checked />
+			<div class="collapse-title text-xl font-medium flex items-center justify-center">
+				{$t('details.stats_title')}
+			</div>
+			<div class="collapse-content pt-0">
+				<div class="max-w-full rounded-md" id="stats-container"></div>
+				<div class="stats bg-base-200 shadow flex items-center justify-center">
+					<div class="stat flex items-center justify-center flex-col">
+						<div class="stat-title">{$t('details.max_memory')}</div>
+						<div class="stat-value">{history?.max_cpu}%</div>
+					</div>
+					<div class="stat flex items-center justify-center flex-col">
+						<div class="stat-title">{$t('details.execution_time')}</div>
+						<div class="stat-value">{history?.execution_time}s</div>
+					</div>
+					<div class="stat flex items-center justify-center flex-col">
+						<div class="stat-title">{$t('details.max_memory')}</div>
+						<div class="stat-value">{history?.max_memory}MB</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
+{/if}
 {#if history?.logs}
 	<div class="card bg-base-100 m-4 shadow-xl">
 		<div class="collapse collapse-arrow">

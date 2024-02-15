@@ -53,7 +53,10 @@
 		"back_button": "Go Back",
 		"stats_title": "Runtime Statistics",
 		"usage": "Usage",
-		"logs_title": "Logs"
+		"logs_title": "Logs",
+		"max_memory": "Max Memory Usage",
+		"max_cpu": "Max CPU Usage",
+		"execution_time": "Execution Time"
 	},
 	"filters": {
 		"name": "Name",

@@ -23,6 +23,10 @@ export default {
 		'badge-success',
 		'badge-error',
 		'badge-warning',
-		'badge-info'
+		'badge-info',
+		'bg-success',
+		'bg-error',
+		'bg-warning',
+		'bg-info'
 	]
 };
