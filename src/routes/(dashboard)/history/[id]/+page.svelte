@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { afterUpdate, onMount } from 'svelte';
 	import { getHistoryDetails } from '../../../../helpers/requests/history.requests';
 	import { goto } from '$app/navigation';
 	import { t } from 'svelte-i18n';
 	import * as Highcharts from 'highcharts';
-	import * as Exporting from 'highcharts/modules/exporting';
-	// @ts-ignore	$
+	import Exporting from 'highcharts/modules/exporting';
+	import { theme } from '$lib/theme/themeStore';
+	import { Themes } from '$lib/theme/enums/themes';
+	import { myNightThemeHighcharts } from './chart.options';
+
 	Exporting(Highcharts);
 
 	/** @type {import('./$types').PageData} */
@@ -14,8 +17,15 @@
 	const timeValues: string[] = ['0s'];
 	const cpuValues: number[] = [0];
 	const memoryValues: number[] = [0];
+	let defaultOptions: any;
+
+	afterUpdate(() => {
+		generateChart();
+	});
 
 	onMount(async () => {
+		defaultOptions = JSON.parse(JSON.stringify(Highcharts.getOptions()));
+
 		const res = await getHistoryDetails(data.id);
 		history = res?.data;
 		if (!history) {
@@ -27,7 +37,14 @@
 			cpuValues.push(stat.cpu);
 			memoryValues.push(stat.memory);
 		}
+		theme.subscribe((value) => {
+			Highcharts.setOptions(value == Themes.DARK ? myNightThemeHighcharts : defaultOptions);
+			generateChart();
+		});
+		generateChart();
+	});
 
+	function generateChart() {
 		Highcharts.chart('stats-container', {
 			chart: {
 				styledMode: false,
@@ -88,7 +105,7 @@
 				]
 			}
 		});
-	});
+	}
 </script>
 
 <div class="card bg-base-100 m-4 shadow-xl" id="main">
