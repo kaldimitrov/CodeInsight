@@ -305,7 +305,10 @@
 					</thead>
 					<tbody>
 						{#each data as row (row.id)}
-							<tr on:click|stopPropagation={() => handleTableClick(row.id)}>
+							<tr
+								class="hover:bg-base-200 cursor-pointer"
+								on:click|stopPropagation={() => handleTableClick(row.id)}
+							>
 								<td class="text-center">{row.name}</td>
 								<td class="text-center">
 									<div class={`badge badge-${getExecutionStatusColor(row.status)} gap-2`}>
