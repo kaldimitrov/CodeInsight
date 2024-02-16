@@ -313,7 +313,7 @@
 									</div>
 								</td>
 								<td class="text-center">{findLanguageName(row.language)}</td>
-								<td class="text-center">{row.execution_time || 0}s</td>
+								<td class="text-center">{row.execution_time / 1000 || 0}s</td>
 								<td class="text-center">{row.max_cpu || 0}%</td>
 								<td class="text-center">{row.max_memory || 0}MB</td>
 								<td class="text-center">{formatShortDateTime(new Date(row.created_at))}</td>

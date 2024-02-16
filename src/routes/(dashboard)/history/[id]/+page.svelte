@@ -9,6 +9,8 @@
 	import { Themes } from '$lib/theme/enums/themes';
 	import { myNightThemeHighcharts } from './chart.options';
 	import { getExecutionStatusColor } from '../../../../helpers/class.helper';
+	import { formatEpochTime } from '../../../../helpers/date.helper';
+	import { getLanguages } from '../../../../helpers/requests/code.requests';
 
 	Exporting(Highcharts);
 
@@ -19,12 +21,15 @@
 	const cpuValues: number[] = [0];
 	const memoryValues: number[] = [0];
 	let defaultOptions: any;
+	let languages: any[] = [];
 
 	afterUpdate(() => {
 		generateChart();
 	});
 
 	onMount(async () => {
+		const resLanguages = await getLanguages();
+		languages = resLanguages?.data.languages;
 		defaultOptions = JSON.parse(JSON.stringify(Highcharts.getOptions()));
 
 		const res = await getHistoryDetails(data.id);
@@ -34,7 +39,7 @@
 		}
 
 		for (const stat of history.stats) {
-			timeValues.push(((stat.time - history.start_time) / 1000).toPrecision(1) + 's');
+			timeValues.push((stat.time - history.start_time) / 1000 + 's');
 			cpuValues.push(stat.cpu);
 			memoryValues.push(stat.memory);
 		}
@@ -46,6 +51,11 @@
 		Highcharts.setOptions($theme == Themes.DARK ? myNightThemeHighcharts : defaultOptions);
 		generateChart();
 	});
+
+	function findLanguageName(key: string) {
+		const lang = languages.find((lang) => lang.key === key);
+		return lang?.name;
+	}
 
 	function generateChart() {
 		if (!history?.stats?.length) {
@@ -137,23 +147,63 @@
 		</div>
 	</div>
 </div>
+<div class="card bg-base-100 m-4 shadow-xl">
+	<div class="collapse collapse-arrow">
+		<input type="checkbox" checked />
+		<div class="collapse-title text-xl font-medium flex items-center justify-center">
+			<strong>
+				{$t('details.information')}
+			</strong>
+		</div>
+		<div class="collapse-content pt-0 max-w-full overflow-x-auto">
+			<div
+				class="stats bg-base-200 shadow flex flex-col md:flex-row items-center justify-center max-w-full"
+			>
+				<div class="stat flex items-center justify-center flex-col">
+					<div class="stat-title">{$t('details.name')}</div>
+					<div class="stat-value">{history?.name}</div>
+				</div>
+				<div class="stat flex items-center justify-center flex-col">
+					<div class="stat-title">{$t('details.status')}</div>
+					<div class="stat-value">
+						{history?.status}
+					</div>
+				</div>
+				<div class="stat flex items-center justify-center flex-col">
+					<div class="stat-title">{$t('details.language')}</div>
+					<div class="stat-value">{findLanguageName(history?.language)}</div>
+				</div>
+				<div class="stat flex items-center justify-center flex-col">
+					<div class="stat-title">{$t('details.start_time')}</div>
+					<div class="stat-value">{formatEpochTime(history?.start_time)}</div>
+				</div>
+				<div class="stat flex items-center justify-center flex-col">
+					<div class="stat-title">{$t('details.end_time')}</div>
+					<div class="stat-value">{formatEpochTime(history?.end_time)}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {#if history?.stats?.length}
 	<div class="card bg-base-100 m-4 shadow-xl">
 		<div class="collapse collapse-arrow">
 			<input type="checkbox" checked />
 			<div class="collapse-title text-xl font-medium flex items-center justify-center">
-				{$t('details.stats_title')}
+				<strong>
+					{$t('details.stats_title')}
+				</strong>
 			</div>
 			<div class="collapse-content pt-0">
 				<div class="max-w-full rounded-md" id="stats-container"></div>
-				<div class="stats bg-base-200 shadow flex items-center justify-center">
+				<div class="stats bg-base-200 shadow flex flex-col md:flex-row items-center justify-center">
 					<div class="stat flex items-center justify-center flex-col">
 						<div class="stat-title">{$t('details.max_memory')}</div>
 						<div class="stat-value">{history?.max_cpu}%</div>
 					</div>
 					<div class="stat flex items-center justify-center flex-col">
 						<div class="stat-title">{$t('details.execution_time')}</div>
-						<div class="stat-value">{history?.execution_time}s</div>
+						<div class="stat-value">{history?.execution_time / 1000}s</div>
 					</div>
 					<div class="stat flex items-center justify-center flex-col">
 						<div class="stat-title">{$t('details.max_memory')}</div>
@@ -169,11 +219,13 @@
 		<div class="collapse collapse-arrow">
 			<input type="checkbox" checked />
 			<div class="collapse-title text-xl font-medium flex items-center justify-center">
-				{$t('details.logs_title')}
+				<strong>
+					{$t('details.logs_title')}
+				</strong>
 			</div>
 			<div class="collapse-content pt-0">
 				<textarea
-					class="textarea flex-1 min-w-full shadow-lg rounded-md h-full"
+					class="textarea flex-1 min-w-full shadow-inner rounded-md bg-base-200 h-64"
 					bind:value={history.logs}
 					readonly
 				/>

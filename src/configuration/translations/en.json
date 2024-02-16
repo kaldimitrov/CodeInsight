@@ -56,7 +56,13 @@
 		"logs_title": "Logs",
 		"max_memory": "Max Memory Usage",
 		"max_cpu": "Max CPU Usage",
-		"execution_time": "Execution Time"
+		"execution_time": "Execution Time",
+		"information": "Information",
+		"name": "Name",
+		"status": "Status",
+		"language": "Language",
+		"start_time": "Start Time",
+		"end_time": "End Time"
 	},
 	"filters": {
 		"name": "Name",
