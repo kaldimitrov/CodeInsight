@@ -15,12 +15,12 @@
 	Exporting(Highcharts);
 
 	/** @type {import('./$types').PageData} */
-	export let data: any;
+	export let data: { id: string };
 	let history: any;
 	const timeValues: string[] = ['0s'];
 	const cpuValues: number[] = [0];
 	const memoryValues: number[] = [0];
-	let defaultOptions: any;
+	let defaultOptions: Highcharts.Options;
 	let languages: any[] = [];
 
 	afterUpdate(() => {

@@ -1,5 +1,5 @@
 export function formatShortDateTime(date: Date) {
-	const options: any = {
+	const options: Intl.DateTimeFormatOptions = {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',

@@ -25,7 +25,7 @@
 		}
 	});
 
-	async function handleSubmit(event: any) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
 		if (form.password !== form.confirmPassword) {

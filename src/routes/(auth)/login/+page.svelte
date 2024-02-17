@@ -19,7 +19,7 @@
 		}
 	});
 
-	async function handleSubmit(event: any) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
 		if (await loginUser({ email: form.email, password: form.password })) {

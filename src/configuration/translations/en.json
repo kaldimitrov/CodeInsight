@@ -96,6 +96,7 @@
 		"unexpected_error": "An unexpected error has occurred",
 		"invalid_file_path": "Invalid file path provided",
 		"invalid_password": "Your password does not meet the requirements",
-		"passwords_do_not_match": "Passwords do not match"
+		"passwords_do_not_match": "Passwords do not match",
+		"max_file_depth": "You've reached the maximum file depth"
 	}
 }

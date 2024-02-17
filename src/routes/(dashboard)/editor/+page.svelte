@@ -21,6 +21,7 @@
 	import { t } from 'svelte-i18n';
 	import { mapFilesToDto } from '../../../helpers/entity.helper';
 	import { getLanguages, submitCode } from '../../../helpers/requests/code.requests';
+	import { addSocketListener } from '../../../helpers/socket.helper';
 
 	let fileMap: any;
 	let projectName: string = 'Project Name';
@@ -32,6 +33,7 @@
 	};
 	let languages: any[] = [];
 	let currentLanguage: any;
+	let logs = '';
 
 	onMount(async () => {
 		const res = await getLanguages();
@@ -41,8 +43,11 @@
 
 		setFileSystem(JSON.parse(localStorage.getItem('fileSystem') || '[]'));
 		fileMap = buildPathMap($fileSystem);
-		console.log(fileSystem.value[0]?.uuid);
 		setCurrentFile(fileSystem.value[0]?.uuid);
+
+		addSocketListener('newLog', (data) => {
+			logs += data.log;
+		});
 	});
 
 	function buildPathMap(items: FileModel[], map: any = {}) {
@@ -72,8 +77,8 @@
 		fileMap = buildPathMap($fileSystem);
 	}
 
-	function deleteItemByUuid(items: any, uuidToDelete: string) {
-		const index = items.findIndex((item: any) => item.uuid === uuidToDelete);
+	function deleteItemByUuid(items: FileModel[], uuidToDelete: string) {
+		const index = items.findIndex((item: FileModel) => item.uuid === uuidToDelete);
 
 		if (index !== -1) {
 			items.splice(index, 1);
@@ -89,6 +94,10 @@
 
 	function createPath(path: string, type: FileTypes) {
 		const parts = path.split('/').filter(Boolean);
+		if (parts.length >= 5) {
+			pushNotification('errors.max_file_depth', AlertLevels.ERROR);
+			return;
+		}
 		let currentLevel: FileModel[] = $fileSystem;
 
 		parts.forEach((part, index) => {
@@ -230,3 +239,22 @@
 		</div>
 	</div>
 </div>
+{#if logs}
+	<div class="card bg-base-100 m-4 shadow-xl">
+		<div class="collapse collapse-arrow">
+			<input type="checkbox" checked />
+			<div class="collapse-title text-xl font-medium flex items-center justify-center">
+				<strong>
+					{$t('details.logs_title')}
+				</strong>
+			</div>
+			<div class="collapse-content pt-0">
+				<textarea
+					class="textarea flex-1 min-w-full shadow-inner rounded-md bg-base-200 h-64"
+					bind:value={logs}
+					readonly
+				/>
+			</div>
+		</div>
+	</div>
+{/if}

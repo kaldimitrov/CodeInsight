@@ -9,7 +9,6 @@
 	import FileCreate from '../../../assets/icons/FileCreate.svelte';
 	import Modal from '../modal/Modal.svelte';
 	import EditableText from '../editableText/EditableText.svelte';
-	import { readonly } from 'svelte/store';
 	const dispatch = createEventDispatcher();
 
 	export let file: any;

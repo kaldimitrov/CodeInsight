@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { token } from '$lib/stores/userStore';
 import { environment } from '../configuration/environment';
 
-let authToken: any;
+let authToken: string;
 
 token.subscribe((value) => {
 	authToken = value;
