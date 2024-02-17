@@ -59,7 +59,11 @@
 			>
 				<div class="flex flex-row items-center">
 					<FolderIcon />
-					<EditableText classList="ml-1" text={file.label} on:change={handleTextChange} />
+					{#if file.readonly}
+						<span class="ml-1">{file.label}</span>
+					{:else}
+						<EditableText classList="ml-1" text={file.label} on:change={handleTextChange} />
+					{/if}
 				</div>
 				{#if isHovering}
 					<div class="flex gap-x-2">
@@ -97,7 +101,11 @@
 		>
 			<div class="flex-grow flex items-center">
 				<FileIcon />
-				<EditableText classList="ml-1" text={file.label} on:change={handleTextChange} />
+				{#if file.readonly}
+					<span class="ml-1">{file.label}</span>
+				{:else}
+					<EditableText classList="ml-1" text={file.label} on:change={handleTextChange} />
+				{/if}
 			</div>
 			{#if isHovering && !file.readonly}
 				<button class="flex-none grow-on-hover" on:click={() => dispatch('delete', file)}>

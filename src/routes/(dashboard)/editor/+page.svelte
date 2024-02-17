@@ -191,10 +191,12 @@
 		</div>
 		<div class="collapse-content pt-0 max-w-full overflow-x-auto">
 			<div
-				class="flex border rounded-lg rounded-tr-none overflow-hidden container min-h-[32rem] min-w-full overflow-x-auto shadow-md"
+				class="flex border rounded-lg rounded-tr-none overflow-hidden container min-h-[40rem] min-w-full overflow-x-auto shadow-md"
 			>
 				{#key fileMap}
-					<ul class="menu menu-xs bg-base-200 rounded-lg rounded-tr-none flex-none w-full max-w-xs">
+					<ul
+						class="menu menu-xs bg-base-300 rounded-lg rounded-r-none flex-none w-full max-w-xs border-r"
+					>
 						<header class="h-8 flex justify-between items-center mb-4">
 							<EditableText
 								classList="ml-1 text-lg font-bold"
@@ -222,7 +224,7 @@
 					</ul>
 				{/key}
 				<div class="flex flex-col w-full">
-					<div class="flex justify-end items-center bg-base-200 border-b pr-2 py-1">
+					<div class="flex justify-end items-center bg-base-300 border-b pr-2 py-1">
 						<select
 							bind:value={currentLanguage}
 							on:change={updateLanguage}
@@ -236,7 +238,7 @@
 
 					{#if $currentFile && fileMap && fileMap[$currentFile]}
 						<textarea
-							class="textarea flex-1 resize-none border"
+							class="textarea flex-1 resize-none border shadow-inner bg-base-200 rounded-l-none"
 							bind:value={fileMap[$currentFile].content}
 							on:input={() => storeCurrentState()}
 						/>
@@ -265,7 +267,7 @@
 			</div>
 			<div class="collapse-content pt-0">
 				<textarea
-					class="textarea flex-1 min-w-full shadow-inner rounded-md bg-base-200 h-64"
+					class="textarea flex-1 min-w-full shadow-inner rounded-md bg-base-300 h-64"
 					bind:value={logs}
 					readonly
 				/>
