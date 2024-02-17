@@ -82,7 +82,8 @@
 	"editor": {
 		"submit": "Submit",
 		"reset": "Reset",
-		"title": "Code Editor"
+		"title": "Code Editor",
+		"successful_execution": "Your code has been executed, redirecting to history..."
 	},
 	"errors": {
 		"invalid_user_error": "Invalid user",

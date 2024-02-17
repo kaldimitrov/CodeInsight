@@ -22,6 +22,7 @@
 	import { mapFilesToDto } from '../../../helpers/entity.helper';
 	import { getLanguages, submitCode } from '../../../helpers/requests/code.requests';
 	import { addSocketListener } from '../../../helpers/socket.helper';
+	import { goto } from '$app/navigation';
 
 	let fileMap: any;
 	let projectName: string = 'Project Name';
@@ -34,6 +35,7 @@
 	let languages: any[] = [];
 	let currentLanguage: any;
 	let logs = '';
+	let buffer = '';
 
 	onMount(async () => {
 		const res = await getLanguages();
@@ -46,7 +48,7 @@
 		setCurrentFile(fileSystem.value[0]?.uuid);
 
 		addSocketListener('newLog', (data) => {
-			logs += data.log;
+			buffer += data.log;
 		});
 	});
 
@@ -148,7 +150,20 @@
 
 	async function handleCodeSubmit() {
 		const fileDtos: FileDto[] = mapFilesToDto($fileSystem);
-		await submitCode({ name: projectName, files: fileDtos, language: currentLanguage.key });
+		const interval = setInterval(() => {
+			logs = buffer;
+		}, 2500);
+		const res = await submitCode({
+			name: projectName,
+			files: fileDtos,
+			language: currentLanguage.key
+		});
+		clearInterval(interval);
+		const statusCode = res?.status || 0;
+		if (statusCode >= 200 && statusCode < 300) {
+			pushNotification('editor.successful_execution', AlertLevels.INFO);
+		}
+		goto(`/history/${res?.data.id}`);
 	}
 
 	function updateLanguage() {
