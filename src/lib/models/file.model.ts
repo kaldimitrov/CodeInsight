@@ -1,4 +1,4 @@
-import type { FileTypes } from '$lib/components/editor/enums/fileTypes';
+import type { FileTypes } from '../components/fileObject/enums/fileTypes';
 
 export interface FileModel {
 	uuid: string;
@@ -6,4 +6,5 @@ export interface FileModel {
 	type: FileTypes;
 	content?: string;
 	children?: FileModel[];
+	readonly?: boolean;
 }

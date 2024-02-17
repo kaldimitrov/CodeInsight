@@ -80,7 +80,9 @@
 		"date": "Date"
 	},
 	"editor": {
-		"submit": "Submit"
+		"submit": "Submit",
+		"reset": "Reset",
+		"title": "Code Editor"
 	},
 	"errors": {
 		"invalid_user_error": "Invalid user",

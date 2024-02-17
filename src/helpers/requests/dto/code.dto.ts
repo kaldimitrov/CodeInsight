@@ -7,5 +7,5 @@ export interface CodeSubmitDto {
 	name: string;
 	files: FileDto[];
 	language: string;
-	version: string;
+	version?: string;
 }

@@ -3,12 +3,13 @@
 	import FolderIcon from '../../../assets/icons/Folder.svelte';
 	import TrashIcon from '../../../assets/icons/Trash.svelte';
 	import { currentFile, setCurrentFile, storeCurrentState } from '$lib/stores/editorStore';
-	import { FileTypes } from './enums/fileTypes.js';
+	import { FileTypes } from './enums/fileTypes';
 	import { createEventDispatcher } from 'svelte';
 	import FolderCreate from '../../../assets/icons/FolderCreate.svelte';
 	import FileCreate from '../../../assets/icons/FileCreate.svelte';
 	import Modal from '../modal/Modal.svelte';
 	import EditableText from '../editableText/EditableText.svelte';
+	import { readonly } from 'svelte/store';
 	const dispatch = createEventDispatcher();
 
 	export let file: any;
@@ -69,9 +70,11 @@
 						<button class="icon" on:click={() => openModal(FileTypes.FILE)}>
 							<FileCreate />
 						</button>
-						<button class="icon" on:click={() => dispatch('delete', file)}>
-							<TrashIcon />
-						</button>
+						{#if !file.readonly}
+							<button class="icon" on:click={() => dispatch('delete', file)}>
+								<TrashIcon />
+							</button>
+						{/if}
 					</div>
 				{/if}
 			</summary>
@@ -97,7 +100,7 @@
 				<FileIcon />
 				<EditableText classList="ml-1" text={file.label} on:change={handleTextChange} />
 			</div>
-			{#if isHovering}
+			{#if isHovering && !file.readonly}
 				<button class="flex-none grow-on-hover" on:click={() => dispatch('delete', file)}>
 					<TrashIcon />
 				</button>
