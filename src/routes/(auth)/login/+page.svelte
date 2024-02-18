@@ -44,7 +44,7 @@
 			</div>
 			<h1 class="text-xl md:text-2xl font-bold leading-tight mt-12">{$t('auth.login_title')}</h1>
 
-			<form class="mt-6" action="#" on:submit={handleSubmit}>
+			<form class="mt-6" on:submit={handleSubmit}>
 				<div>
 					<label for="email" class="block">{$t('auth.email_title')}</label>
 					<input

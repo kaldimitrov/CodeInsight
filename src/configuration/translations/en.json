@@ -106,5 +106,18 @@
 		"invalid_password": "Your password does not meet the requirements",
 		"passwords_do_not_match": "Passwords do not match",
 		"max_file_depth": "You've reached the maximum file depth"
+	},
+	"user": {
+		"title": "User Profile",
+		"delete": "Delete",
+		"save": "Save",
+		"first_name": "First Name",
+		"last_name": "Last Name",
+		"email": "Email",
+		"created_at": "Creation Date",
+		"updated_at": "Last Update",
+		"role": "Role",
+		"details": "Details",
+		"limits": "Limits"
 	}
 }

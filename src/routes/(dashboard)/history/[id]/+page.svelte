@@ -129,7 +129,7 @@
 
 <div class="card bg-base-100 m-4 shadow-xl" id="main">
 	<div class="collapse collapse-close">
-		<div class="collapse-title text-xl font-medium flex justify-between pr-4">
+		<div class="collapse-title text-2xl font-bold flex justify-between pr-4">
 			<div class="flex gap-4 w-full">
 				<div
 					class={`h-full aspect-square bg-${getExecutionStatusColor(history?.status)} rounded-full`}
@@ -150,7 +150,7 @@
 <div class="card bg-base-100 m-4 shadow-xl">
 	<div class="collapse collapse-arrow">
 		<input type="checkbox" checked />
-		<div class="collapse-title text-xl font-medium flex items-center justify-center">
+		<div class="collapse-title text-2xl font-bold flex items-center justify-center">
 			<strong>
 				{$t('details.information')}
 			</strong>
@@ -189,7 +189,7 @@
 	<div class="card bg-base-100 m-4 shadow-xl">
 		<div class="collapse collapse-arrow">
 			<input type="checkbox" checked />
-			<div class="collapse-title text-xl font-medium flex items-center justify-center">
+			<div class="collapse-title text-2xl font-bold flex items-center justify-center">
 				<strong>
 					{$t('details.stats_title')}
 				</strong>
@@ -218,7 +218,7 @@
 	<div class="card bg-base-100 m-4 shadow-xl">
 		<div class="collapse collapse-arrow">
 			<input type="checkbox" checked />
-			<div class="collapse-title text-xl font-medium flex items-center justify-center">
+			<div class="collapse-title text-2xl font-bold flex items-center justify-center">
 				<strong>
 					{$t('details.logs_title')}
 				</strong>

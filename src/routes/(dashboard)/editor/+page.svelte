@@ -184,7 +184,7 @@
 <div class="card bg-base-100 m-4 shadow-xl">
 	<div class="collapse collapse-arrow">
 		<input type="checkbox" checked />
-		<div class="collapse-title text-xl font-medium flex items-center justify-center">
+		<div class="collapse-title text-2xl font-bold flex items-center justify-center">
 			<strong>
 				{$t('editor.title')}
 			</strong>
@@ -260,7 +260,7 @@
 	<div class="card bg-base-100 m-4 shadow-xl">
 		<div class="collapse collapse-arrow">
 			<input type="checkbox" checked />
-			<div class="collapse-title text-xl font-medium flex items-center justify-center">
+			<div class="collapse-title text-2xl font-medium flex items-center justify-center">
 				<strong>
 					{$t('details.logs_title')}
 				</strong>

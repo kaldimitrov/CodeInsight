@@ -183,7 +183,7 @@
 <div class="card bg-base-100 m-4 shadow-xl">
 	<div class="collapse collapse-arrow">
 		<input type="checkbox" checked />
-		<div class="collapse-title text-xl font-medium flex items-center justify-center">
+		<div class="collapse-title text-2xl font-bold flex items-center justify-center">
 			{$t('history.filters_title')}
 		</div>
 		<div class="collapse-content pt-0">
@@ -303,7 +303,7 @@
 <div class="card bg-base-100 shadow-xl m-4">
 	<div class="collapse collapse-arrow">
 		<input type="checkbox" checked />
-		<div class="collapse-title text-xl font-medium flex items-center justify-center">
+		<div class="collapse-title text-2xl font-bold flex items-center justify-center">
 			{$t('history.execution_history_title')}
 		</div>
 		<div class="collapse-content overflow-x-auto">

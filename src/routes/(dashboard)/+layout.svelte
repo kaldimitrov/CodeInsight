@@ -6,9 +6,10 @@
 	import Logo from '../../assets/icons/Logo.svelte';
 	import Profile from '../../assets/icons/Profile.svelte';
 	import { clearToken } from '$lib/stores/userStore';
+	import { getUserInfo } from '../../helpers/requests/user.requests';
 
 	onMount(async () => {
-		connectSocket();
+		Promise.all([await getUserInfo(), connectSocket()]);
 	});
 </script>
 
@@ -49,7 +50,7 @@
 			</div>
 			<a href="/" class="md:hidden btn btn-ghost text-3xl font-bold px-2">
 				<div class="flex flex-row justify-end items-center">
-					<h1 class="text-4xl font-bold">{$t('title')}</h1>
+					<h1 class="text-3xl font-extrabold">{$t('title')}</h1>
 				</div>
 			</a>
 			<div class="md:w-2/3 justify-between md:justify-end">
@@ -61,9 +62,9 @@
 					</ul>
 				</div>
 				<div class="flex justify-end items-center">
-					<ThemeSwitcher />
+					<ThemeSwitcher classList="btn btn-ghost p-2" />
 					<div class="dropdown dropdown-end">
-						<div tabindex="0" role="button" class="btn btn-ghost">
+						<div tabindex="0" role="button" class="btn btn-ghost p-2">
 							<Profile classList="w-8 h-8" />
 						</div>
 						<ul class="menu menu-sm dropdown-content mt-3 p-2 bg-base-100 rounded-box shadow-2xl">

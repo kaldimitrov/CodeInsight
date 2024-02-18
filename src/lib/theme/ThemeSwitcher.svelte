@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { toggleTheme } from './themeStore';
 
-	export const classList: string = '';
+	export let classList: string = '';
 </script>
 
-<label class="swap swap-rotate btn-square p-2 {classList}">
+<label class="swap swap-rotate p-2 {classList}">
 	<input
 		type="checkbox"
 		class="theme-controller"
