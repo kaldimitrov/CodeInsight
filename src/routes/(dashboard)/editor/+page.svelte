@@ -191,7 +191,7 @@
 		</div>
 		<div class="collapse-content pt-0 max-w-full overflow-x-auto">
 			<div
-				class="flex border rounded-lg rounded-tr-none overflow-hidden container min-h-[40rem] min-w-full overflow-x-auto shadow-md"
+				class="flex border rounded-lg overflow-hidden container min-h-[40rem] min-w-full overflow-x-auto shadow-md"
 			>
 				{#key fileMap}
 					<ul
@@ -223,8 +223,8 @@
 						{/each}
 					</ul>
 				{/key}
-				<div class="flex flex-col w-full">
-					<div class="flex justify-end items-center bg-base-300 border-b pr-2 py-1">
+				<div class="flex flex-col w-full rounded-tr-lg">
+					<div class="flex justify-end items-center bg-base-300 border-b pr-2 py-1 rounded-tr-lg">
 						<select
 							bind:value={currentLanguage}
 							on:change={updateLanguage}
@@ -238,7 +238,7 @@
 
 					{#if $currentFile && fileMap && fileMap[$currentFile]}
 						<textarea
-							class="textarea flex-1 resize-none border shadow-inner bg-base-200 rounded-l-none"
+							class="textarea flex-1 resize-none border shadow-inner bg-base-200 rounded-l-none rounded-tr-none"
 							bind:value={fileMap[$currentFile].content}
 							on:input={() => storeCurrentState()}
 						/>

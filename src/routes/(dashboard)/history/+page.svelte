@@ -10,6 +10,7 @@
 	import { goto, pushState } from '$app/navigation';
 	import { ExecutionStatus } from '../../../helpers/requests/enums/executionStatus';
 	import { getLanguages } from '../../../helpers/requests/code.requests';
+	import { OrderOptions, OrderTypes } from '../../../helpers/requests/enums/orderOptions';
 
 	let data: TableHistory[] = [];
 	let currentPage = 1;
@@ -28,7 +29,9 @@
 		min_execution_time: null,
 		max_execution_time: null,
 		date_start: null,
-		date_end: null
+		date_end: null,
+		orderBy: OrderTypes.DESC,
+		orderOptions: OrderOptions.CREATED_AT
 	};
 
 	onMount(async () => {
@@ -166,7 +169,9 @@
 			min_execution_time: null,
 			max_execution_time: null,
 			date_start: null,
-			date_end: null
+			date_end: null,
+			orderBy: OrderTypes.DESC,
+			orderOptions: OrderOptions.CREATED_AT
 		};
 		const newUrl = `${window.location.pathname}`;
 		pushState(newUrl, {});
@@ -257,17 +262,30 @@
 					<input
 						type="number"
 						placeholder={$t('filters.min_memory')}
-						pattern="[0-9]*"
 						bind:value={inputFilters.min_memory_usage}
 						class="input input-bordered"
 					/>
 					<input
 						type="number"
-						pattern="^\d*\.?\d+$"
 						placeholder={$t('filters.max_memory')}
 						bind:value={inputFilters.max_memory_usage}
 						class="input input-bordered"
 					/>
+				</div>
+				<div class="form-control gap-1">
+					<label for="status" class="label">
+						<span class="label-text">{$t('filters.order_options')}</span>
+					</label>
+					<select bind:value={inputFilters.orderOptions} class="select select-bordered">
+						{#each Object.values(OrderOptions) as option}
+							<option value={option}>{$t(`history.order_${option}`)}</option>
+						{/each}
+					</select>
+					<select bind:value={inputFilters.orderBy} class="select select-bordered">
+						{#each Object.values(OrderTypes) as option}
+							<option>{option}</option>
+						{/each}
+					</select>
 				</div>
 
 				<div class="form-control flex w-full flex-row-reverse gap-4 pt-4">

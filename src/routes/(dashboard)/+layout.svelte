@@ -4,6 +4,8 @@
 	import ThemeSwitcher from '$lib/theme/ThemeSwitcher.svelte';
 	import { t } from 'svelte-i18n';
 	import Logo from '../../assets/icons/Logo.svelte';
+	import Profile from '../../assets/icons/Profile.svelte';
+	import { clearToken } from '$lib/stores/userStore';
 
 	onMount(async () => {
 		connectSocket();
@@ -12,8 +14,8 @@
 
 <div class="flex flex-col items-center min-h-screen bg-base-200">
 	<div class="fixed top-0 z-40 flex justify-center w-full rounded-b-md">
-		<div class="navbar bg-base-100 w-full rounded-b-2xl shadow-lg">
-			<div class="w-1/5 md:w-1/3 justify-start">
+		<div class="navbar bg-base-100 w-full rounded-b-2xl shadow-lg p-2 justify-between">
+			<div class="md:w-1/3 justify-start">
 				<div class="dropdown">
 					<div tabindex="0" role="button" class="btn btn-ghost md:hidden">
 						<svg
@@ -45,12 +47,12 @@
 					</div></a
 				>
 			</div>
-			<a href="/" class="md:hidden btn btn-ghost text-3xl font-bold">
-				<div class="flex flex-row gap-4">
+			<a href="/" class="md:hidden btn btn-ghost text-3xl font-bold px-2">
+				<div class="flex flex-row justify-end items-center">
 					<h1 class="text-4xl font-bold">{$t('title')}</h1>
 				</div>
 			</a>
-			<div class="w-4/5 md:w-2/3 justify-end">
+			<div class="md:w-2/3 justify-between md:justify-end">
 				<div class="hidden md:flex">
 					<ul class="menu menu-horizontal px-1">
 						<li><a class="hover:text-primary" href="/">{$t('navbar.home')}</a></li>
@@ -58,7 +60,24 @@
 						<li><a class="hover:text-primary" href="/history">{$t('navbar.history')}</a></li>
 					</ul>
 				</div>
-				<ThemeSwitcher />
+				<div class="flex justify-end items-center">
+					<ThemeSwitcher />
+					<div class="dropdown dropdown-end">
+						<div tabindex="0" role="button" class="btn btn-ghost">
+							<Profile classList="w-8 h-8" />
+						</div>
+						<ul class="menu menu-sm dropdown-content mt-3 p-2 bg-base-100 rounded-box shadow-2xl">
+							<li>
+								<a class="hover:text-primary" href="/user">{$t('navbar.user_view_profile')}</a>
+							</li>
+							<li>
+								<a class="hover:text-primary" href="/" on:click={clearToken}
+									>{$t('navbar.user_logout')}</a
+								>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
