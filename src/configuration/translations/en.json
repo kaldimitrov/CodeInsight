@@ -118,6 +118,11 @@
 		"updated_at": "Last Update",
 		"role": "Role",
 		"details": "Details",
-		"limits": "Limits"
+		"limits": "Limits",
+		"max_files": "Max Files",
+		"max_file_depth": "Max File Depth",
+		"max_runtime_duration": "Max Runtime Duration",
+		"max_memory_limit": "Max Memory Limit",
+		"execution_concurrency": "Execution Concurrency"
 	}
 }

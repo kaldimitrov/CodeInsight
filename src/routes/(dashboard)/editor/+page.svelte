@@ -23,6 +23,7 @@
 	import { getLanguages, submitCode } from '../../../helpers/requests/code.requests';
 	import { addSocketListener } from '../../../helpers/socket.helper';
 	import { goto } from '$app/navigation';
+	import { MAX_FILE_DEPTH } from '$lib/constants';
 
 	let fileMap: any;
 	let projectName: string = 'Project Name';
@@ -96,7 +97,7 @@
 
 	function createPath(path: string, type: FileTypes) {
 		const parts = path.split('/').filter(Boolean);
-		if (parts.length >= 5) {
+		if (parts.length >= MAX_FILE_DEPTH) {
 			pushNotification('errors.max_file_depth', AlertLevels.ERROR);
 			return;
 		}

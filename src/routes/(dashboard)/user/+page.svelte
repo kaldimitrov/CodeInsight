@@ -6,6 +6,7 @@
 	import { clearUser, user } from '$lib/stores/userStore';
 	import type { User } from '$lib/models/user.model';
 	import { formatShortDateTime } from '../../../helpers/date.helper';
+	import { MAX_FILE_DEPTH } from '$lib/constants';
 
 	let userDetails: User;
 	onMount(async () => {
@@ -39,7 +40,7 @@
 							{$t('user.details')}
 						</div>
 						<form class="flex flex-col flex-wrap gap-4">
-							<div class="flex gap-4">
+							<div class="flex gap-4 flex-wrap">
 								<div class="form-control flex-1">
 									<label for="name" class="label">
 										<span class="label-text">{$t('user.first_name')}</span>
@@ -65,14 +66,14 @@
 									/>
 								</div>
 							</div>
-							<div class="flex gap-4">
+							<div class="flex gap-4 flex-wrap">
 								<div class="form-control flex-1">
 									<label for="name" class="label">
 										<span class="label-text">{$t('user.email')}</span>
 									</label>
 									<input
 										type="email"
-										bind:value={userDetails.email}
+										placeholder={userDetails.email}
 										class="input input-bordered disabled"
 										disabled
 									/>
@@ -89,7 +90,7 @@
 									/>
 								</div>
 							</div>
-							<div class="flex gap-4 w-full">
+							<div class="flex gap-4 w-full flex-wrap">
 								<div class="form-control flex-1">
 									<label for="name" class="label">
 										<span class="label-text">{$t('user.created_at')}</span>
@@ -113,14 +114,6 @@
 									/>
 								</div>
 							</div>
-							<div class="form-control flex w-full flex-row-reverse gap-4 pt-4">
-								<button on:click={handleSubmit} type="submit" class="btn btn-success min-w-36"
-									>{$t('user.save')}</button
-								>
-								<button on:click={handleDelete} type="button" class="btn btn-error min-w-36"
-									>{$t('user.delete')}</button
-								>
-							</div>
 						</form>
 					</div>
 					<div class="divider lg:divider-horizontal"></div>
@@ -128,7 +121,78 @@
 						<div class="flex items-center justify-center text-2xl font-medium">
 							{$t('user.limits')}
 						</div>
+						<form class="flex flex-col flex-wrap gap-4">
+							<div class="flex gap-4 flex-wrap">
+								<div class="form-control flex flex-1">
+									<label for="name" class="label">
+										<span class="label-text">{$t('user.max_files')}</span>
+									</label>
+									<input
+										type="text"
+										placeholder={String(userDetails.max_files)}
+										class="input input-bordered disabled"
+										disabled
+									/>
+								</div>
+								<div class="form-control flex-1">
+									<label for="name" class="label">
+										<span class="label-text">{$t('user.max_file_depth')}</span>
+									</label>
+									<input
+										type="text"
+										placeholder={String(MAX_FILE_DEPTH)}
+										class="input input-bordered disabled"
+										disabled
+									/>
+								</div>
+							</div>
+							<div class="flex gap-4 w-full flex-wrap">
+								<div class="form-control flex-1">
+									<label for="name" class="label">
+										<span class="label-text">{$t('user.max_runtime_duration')}</span>
+									</label>
+									<input
+										type="text"
+										placeholder={`${userDetails.max_runtime_duration / 1000}s`}
+										class="input input-bordered disabled"
+										disabled
+									/>
+								</div>
+								<div class="form-control flex-1">
+									<label for="name" class="label">
+										<span class="label-text">{$t('user.max_memory_limit')}</span>
+									</label>
+									<input
+										type="text"
+										placeholder={`${userDetails.max_memory_limit}MB`}
+										class="input input-bordered disabled"
+										disabled
+									/>
+								</div>
+							</div>
+							<div class="flex gap-4 w-full flex-wrap">
+								<div class="form-control flex-1">
+									<label for="name" class="label">
+										<span class="label-text">{$t('user.execution_concurrency')}</span>
+									</label>
+									<input
+										type="text"
+										placeholder={String(userDetails.execution_concurrency)}
+										class="input input-bordered disabled"
+										disabled
+									/>
+								</div>
+							</div>
+						</form>
 					</div>
+				</div>
+				<div class="form-control flex flex-row w-full items-center justify-end gap-4 pt-4">
+					<button on:click={handleDelete} type="button" class="btn btn-error min-w-36"
+						>{$t('user.delete')}</button
+					>
+					<button on:click={handleSubmit} type="submit" class="btn btn-success min-w-36"
+						>{$t('user.save')}</button
+					>
 				</div>
 			</div>
 		</div>
