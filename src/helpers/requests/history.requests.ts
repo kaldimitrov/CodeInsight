@@ -15,6 +15,16 @@ export function getHistory(params: GetHistoryDto) {
 	});
 }
 
+export function getHistoryReport() {
+	return http.get(`history/report`).catch((e: any) => {
+		const errorKey = isTranslationKey(`errors.${e.response?.data?.message?.toLowerCase()}`)
+			? `errors.${e.response.data.message.toLowerCase()}`
+			: 'errors.unexpected_error';
+
+		pushNotification(errorKey, AlertLevels.ERROR);
+	});
+}
+
 export function getHistoryDetails(executionId: string) {
 	return http.get(`history/${executionId}`).catch((e: any) => {
 		const errorKey = isTranslationKey(`errors.${e.response?.data?.message?.toLowerCase()}`)

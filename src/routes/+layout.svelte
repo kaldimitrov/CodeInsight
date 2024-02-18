@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Notification from '$lib/components/notifications/Notification.svelte';
 	import { theme } from '$lib/theme/themeStore';
-	import type { Themes } from '$lib/theme/enums/themes';
+	import { Themes } from '$lib/theme/enums/themes';
 	import { setToken, token } from '$lib/stores/userStore';
 	import '../app.css';
 	import { addMessages, getLocaleFromNavigator, init } from 'svelte-i18n';
@@ -16,8 +16,10 @@
 			localStorage.setItem('token', newToken);
 		});
 
+		theme.value = (localStorage.getItem('theme') as Themes) || Themes.LIGHT;
 		theme.subscribe((value: Themes) => {
 			document.documentElement.setAttribute('data-theme', value);
+			localStorage.setItem('theme', value);
 		});
 
 		addMessages('en', en);

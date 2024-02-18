@@ -7,11 +7,10 @@
 	import Exporting from 'highcharts/modules/exporting';
 	import { theme } from '$lib/theme/themeStore';
 	import { Themes } from '$lib/theme/enums/themes';
-	import { myNightThemeHighcharts } from './chart.options';
+	import { NightThemeHighcharts, defaultOptions } from '../../../../lib/chart.options';
 	import { getExecutionStatusColor } from '../../../../helpers/class.helper';
 	import { formatEpochTime } from '../../../../helpers/date.helper';
 	import { getLanguages } from '../../../../helpers/requests/code.requests';
-
 	Exporting(Highcharts);
 
 	/** @type {import('./$types').PageData} */
@@ -20,7 +19,6 @@
 	const timeValues: string[] = ['0s'];
 	const cpuValues: number[] = [0];
 	const memoryValues: number[] = [0];
-	let defaultOptions: Highcharts.Options;
 	let languages: any[] = [];
 
 	afterUpdate(() => {
@@ -30,7 +28,6 @@
 	onMount(async () => {
 		const resLanguages = await getLanguages();
 		languages = resLanguages?.data.languages;
-		defaultOptions = JSON.parse(JSON.stringify(Highcharts.getOptions()));
 
 		const res = await getHistoryDetails(data.id);
 		history = res?.data;
@@ -44,11 +41,11 @@
 			memoryValues.push(stat.memory);
 		}
 		theme.subscribe((value) => {
-			Highcharts.setOptions(value == Themes.DARK ? myNightThemeHighcharts : defaultOptions);
+			Highcharts.setOptions(value == Themes.DARK ? NightThemeHighcharts : defaultOptions);
 			generateChart();
 		});
 
-		Highcharts.setOptions($theme == Themes.DARK ? myNightThemeHighcharts : defaultOptions);
+		Highcharts.setOptions($theme == Themes.DARK ? NightThemeHighcharts : defaultOptions);
 		generateChart();
 	});
 
@@ -198,7 +195,7 @@
 				<div class="max-w-full rounded-md" id="stats-container"></div>
 				<div class="stats bg-base-200 shadow flex flex-col md:flex-row items-center justify-center">
 					<div class="stat flex items-center justify-center flex-col">
-						<div class="stat-title">{$t('details.max_memory')}</div>
+						<div class="stat-title">{$t('details.max_cpu')}</div>
 						<div class="stat-value">{history?.max_cpu}%</div>
 					</div>
 					<div class="stat flex items-center justify-center flex-col">
