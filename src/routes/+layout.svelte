@@ -7,6 +7,7 @@
 	import '../app.css';
 	import { addMessages, getLocaleFromNavigator, init } from 'svelte-i18n';
 	import en from '../configuration/translations/en.json';
+	import bg from '../configuration/translations/bg.json';
 
 	let loaded = false;
 
@@ -23,6 +24,7 @@
 		});
 
 		addMessages('en', en);
+		addMessages('bg', bg);
 		init({
 			fallbackLocale: 'en',
 			initialLocale: getLocaleFromNavigator()

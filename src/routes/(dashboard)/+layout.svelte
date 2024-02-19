@@ -7,6 +7,7 @@
 	import Profile from '../../assets/icons/Profile.svelte';
 	import { clearToken } from '$lib/stores/userStore';
 	import { getUserInfo } from '../../helpers/requests/user.requests';
+	import LanguageSwitcher from '$lib/language/LanguageSwitcher.svelte';
 
 	onMount(async () => {
 		Promise.all([await getUserInfo(), connectSocket()]);
@@ -53,15 +54,18 @@
 					<h1 class="text-3xl font-extrabold">{$t('title')}</h1>
 				</div>
 			</a>
-			<div class="md:w-2/3 justify-between md:justify-end">
-				<div class="hidden md:flex">
-					<ul class="menu menu-horizontal px-1">
-						<li><a class="hover:text-primary" href="/">{$t('navbar.home')}</a></li>
-						<li><a class="hover:text-primary" href="/editor">{$t('navbar.editor')}</a></li>
-						<li><a class="hover:text-primary" href="/history">{$t('navbar.history')}</a></li>
-					</ul>
-				</div>
+			<section
+				class="hidden md:flex justify-center items-center text-3xl font-bold px-2 w-1/3 h-full"
+			>
+				<ul class="menu menu-horizontal px-1">
+					<li><a class="hover:text-primary text-2xl" href="/editor">{$t('navbar.editor')}</a></li>
+					<li><a class="hover:text-primary text-2xl" href="/">{$t('navbar.home')}</a></li>
+					<li><a class="hover:text-primary text-2xl" href="/history">{$t('navbar.history')}</a></li>
+				</ul>
+			</section>
+			<div class="md:w-1/3 justify-between md:justify-end">
 				<div class="flex justify-end items-center">
+					<LanguageSwitcher />
 					<ThemeSwitcher classList="btn btn-ghost p-2" />
 					<div class="dropdown dropdown-end">
 						<div tabindex="0" role="button" class="btn btn-ghost p-2">
