@@ -17,12 +17,12 @@
 <div class="flex flex-col items-center min-h-screen bg-base-200">
 	<div class="fixed top-0 z-40 flex justify-center w-full rounded-b-md">
 		<div class="navbar bg-base-100 w-full rounded-b-2xl shadow-lg p-2 justify-between">
-			<div class="md:w-1/3 justify-start">
+			<div class="md:w-1/3 justify-start pr-0">
 				<div class="dropdown">
-					<div tabindex="0" role="button" class="btn btn-ghost md:hidden">
+					<div tabindex="0" role="button" class="btn btn-ghost md:hidden pl-0 pr-1">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5"
+							class="h-6 w-6"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -42,6 +42,9 @@
 						<li><a class="hover:text-primary" href="/history">{$t('navbar.history')}</a></li>
 					</ul>
 				</div>
+				<div class="flex md:hidden">
+					<LanguageSwitcher classList="w-4 h-4" dropdownStart />
+				</div>
 				<a href="/" class="pl-4 hidden md:flex text-3xl font-bold">
 					<div class="flex flex-row gap-4 w-11 h-11">
 						<Logo classList="min-w-full min-h-full" />
@@ -49,7 +52,7 @@
 					</div></a
 				>
 			</div>
-			<a href="/" class="md:hidden btn btn-ghost text-3xl font-bold px-2">
+			<a href="/" class="md:hidden btn btn-ghost text-3xl font-bold px-0">
 				<div class="flex flex-row justify-end items-center">
 					<h1 class="text-3xl font-extrabold">{$t('title')}</h1>
 				</div>
@@ -65,10 +68,12 @@
 			</section>
 			<div class="md:w-1/3 justify-between md:justify-end">
 				<div class="flex justify-end items-center">
-					<LanguageSwitcher />
-					<ThemeSwitcher classList="btn btn-ghost p-2" />
+					<div class="hidden md:flex">
+						<LanguageSwitcher />
+					</div>
+					<ThemeSwitcher classList="btn btn-ghost p-2 pl-0 md:p-2" />
 					<div class="dropdown dropdown-end">
-						<div tabindex="0" role="button" class="btn btn-ghost p-2">
+						<div tabindex="0" role="button" class="btn btn-ghost p-2 px-0 md:px-2">
 							<Profile classList="w-8 h-8" />
 						</div>
 						<ul class="menu menu-sm dropdown-content mt-3 p-2 bg-base-100 rounded-box shadow-2xl">

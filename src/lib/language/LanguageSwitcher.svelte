@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { locale } from 'svelte-i18n';
-	import EnFlag from '../../assets/icons/BgFlag.svelte';
+	import EnFlag from '../../assets/icons/EnFlag.svelte';
 	import BgFlag from '../../assets/icons/BgFlag.svelte';
 	import { onMount } from 'svelte';
 
+	export let classList = '';
+	export let dropdownStart = false;
 	let currentLocale: LocaleKey;
 	type LocaleKey = keyof typeof locales;
 
@@ -13,6 +15,7 @@
 
 	function changeLocale(newLocale: string) {
 		$locale = newLocale;
+		currentLocale = $locale as LocaleKey;
 	}
 
 	const locales = {
@@ -22,24 +25,20 @@
 </script>
 
 {#if currentLocale}
-	<div class="dropdown dropdown-end">
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<label tabindex="0" class="btn m-1">
-			<svelte:component this={locales[currentLocale]?.Component} classList="w-6 h-6" />
-		</label>
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+	<div class={`dropdown ${dropdownStart ? 'dropdown-start' : 'dropdown-end'}`}>
+		<button class="btn btn-ghost px-2">
+			<svelte:component
+				this={locales[currentLocale]?.Component}
+				classList={`w-8 h-8 ${classList}`}
+			/>
+		</button>
+		<ul tabindex="-1" class="dropdown-content menu shadow bg-base-100 rounded-box w-52">
 			{#each Object.entries(locales) as [localeKey, { Component, name }]}
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<!-- svelte-ignore a11y-missing-attribute -->
 				<li>
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<!-- svelte-ignore a11y-no-static-element-interactions -->
-					<a on:click={() => changeLocale(localeKey)}>
-						<svelte:component this={Component} classList="w-6 h-6" />
+					<button on:click={() => changeLocale(localeKey)}>
+						<svelte:component this={Component} classList={`w-8 h-8 ${classList}`} />
 						{name}
-					</a>
+					</button>
 				</li>
 			{/each}
 		</ul>
