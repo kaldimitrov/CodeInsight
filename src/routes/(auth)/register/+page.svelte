@@ -11,6 +11,7 @@
 	import { isTokenValid } from '../../../helpers/token.helper';
 	import { token } from '$lib/stores/userStore';
 
+	let isLoading = false;
 	const form = {
 		firstName: '',
 		lastName: '',
@@ -36,6 +37,7 @@
 			return pushNotification('errors.invalid_password', AlertLevels.ERROR);
 		}
 
+		isLoading = true;
 		if (
 			await registerUser({
 				firstName: form.firstName,
@@ -44,8 +46,10 @@
 				password: form.password
 			})
 		) {
+			isLoading = false;
 			return goto('/editor');
 		}
+		isLoading = false;
 	}
 </script>
 
@@ -124,8 +128,9 @@
 
 				<button
 					type="submit"
-					class="w-full block bg-primary hover:opacity-80 focus:opacity-80 text-primary-content font-semibold rounded-lg
-                px-4 py-3 mt-6">{$t('auth.register_button')}</button
+					class={`w-full block bg-primary hover:opacity-80 focus:opacity-80 text-primary-content font-semibold rounded-lg
+                px-4 py-3 mt-6 ${isLoading ? 'btn-disabled' : ''}`}
+					>{$t('auth.register_button')}</button
 				>
 			</form>
 

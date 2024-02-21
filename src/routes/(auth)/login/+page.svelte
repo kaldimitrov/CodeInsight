@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import Logo from '../../../assets/icons/Logo.svelte';
 
+	let isLoading = false;
 	const form = {
 		email: '',
 		password: ''
@@ -22,9 +23,12 @@
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
+		isLoading = true;
 		if (await loginUser({ email: form.email, password: form.password })) {
+			isLoading = false;
 			return goto('/editor');
 		}
+		isLoading = false;
 	}
 </script>
 
@@ -74,8 +78,9 @@
 
 				<button
 					type="submit"
-					class="w-full block bg-primary hover:opacity-80 focus:opacity-80 text-primary-content font-semibold rounded-lg
-                px-4 py-3 mt-6">{$t('auth.login_button')}</button
+					class={`w-full block bg-primary hover:opacity-80 focus:opacity-80 text-primary-content font-semibold rounded-lg
+                px-4 py-3 mt-6 ${isLoading ? 'tab-disabled' : ''}`}
+					>{$t('auth.login_button')}</button
 				>
 			</form>
 

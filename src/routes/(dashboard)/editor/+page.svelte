@@ -35,6 +35,7 @@
 	};
 	let languages: any[] = [];
 	let currentLanguage: any;
+	let tabSize = 4;
 	let logs = '';
 	let buffer = '';
 
@@ -176,6 +177,27 @@
 		setCurrentFile($fileSystem[0].uuid);
 		storeCurrentState();
 	}
+
+	function handleTab(event: any) {
+		if (event.key != 'Tab') return;
+
+		event.preventDefault();
+
+		const textarea = event.target;
+		const start = textarea.selectionStart;
+		const end = textarea.selectionEnd;
+		const spaces = ' '.repeat(tabSize);
+
+		fileMap[$currentFile].content =
+			fileMap[$currentFile].content.substring(0, start) +
+			spaces +
+			fileMap[$currentFile].content.substring(end);
+
+		setTimeout(() => {
+			textarea.selectionStart = textarea.selectionEnd = start + tabSize;
+		}, 0);
+		storeCurrentState();
+	}
 </script>
 
 {#if modal.show}
@@ -242,6 +264,7 @@
 							class="textarea flex-1 resize-none border shadow-inner bg-base-200 rounded-l-none rounded-tr-none"
 							bind:value={fileMap[$currentFile].content}
 							on:input={() => storeCurrentState()}
+							on:keydown={handleTab}
 						/>
 					{/if}
 				</div>
