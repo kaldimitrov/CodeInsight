@@ -9,3 +9,7 @@ export interface LoginUserDto {
 	email: string;
 	password: string;
 }
+
+export interface RefreshUserDto {
+	refresh_token: string;
+}
