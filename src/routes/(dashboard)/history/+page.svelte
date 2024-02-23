@@ -287,6 +287,23 @@
 						{/each}
 					</select>
 				</div>
+				<div class="form-control gap-1">
+					<label for="dateRange" class="label">
+						<span class="label-text">{$t('filters.date_range')}</span>
+					</label>
+					<input
+						type="date"
+						placeholder={$t('filters.from')}
+						bind:value={inputFilters.date_start}
+						class="input input-bordered"
+					/>
+					<input
+						type="date"
+						placeholder={$t('filters.to')}
+						bind:value={inputFilters.date_end}
+						class="input input-bordered"
+					/>
+				</div>
 
 				<div class="form-control flex w-full flex-row-reverse gap-4 pt-4">
 					<button type="submit" class="btn btn-success min-w-36"

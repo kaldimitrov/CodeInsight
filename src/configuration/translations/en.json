@@ -84,7 +84,10 @@
 		"max_memory": "Max Memory",
 		"min_memory": "Min Memory",
 		"date": "Date",
-		"order_options": "Order Options"
+		"order_options": "Order Options",
+		"date_range": "Date Range",
+		"from": "From",
+		"to": "To"
 	},
 	"editor": {
 		"submit": "Submit",
