@@ -101,7 +101,11 @@
 
 	function setSearchParam(key: string, value: any) {
 		const urlParams = new URLSearchParams(window.location.search);
-		urlParams.set(key, value);
+		if (!value) {
+			urlParams.delete(key);
+		} else {
+			urlParams.set(key, value);
+		}
 		const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
 
 		pushState(newUrl, {});
