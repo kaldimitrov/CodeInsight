@@ -3,7 +3,7 @@
 	import Notification from '$lib/components/notifications/Notification.svelte';
 	import { theme } from '$lib/theme/themeStore';
 	import { Themes } from '$lib/theme/enums/themes';
-	import { refreshToken, setToken, token } from '$lib/stores/userStore';
+	import { refreshToken, setRefreshToken, setToken, token } from '$lib/stores/userStore';
 	import '../app.css';
 	import { addMessages, getLocaleFromNavigator, init } from 'svelte-i18n';
 	import en from '../configuration/translations/en.json';
@@ -16,6 +16,8 @@
 		token.subscribe((newToken: string) => {
 			localStorage.setItem('token', newToken);
 		});
+
+		setRefreshToken(localStorage.getItem('refreshToken') as string);
 		refreshToken.subscribe((newRefreshToken: string) => {
 			localStorage.setItem('refreshToken', newRefreshToken);
 		});

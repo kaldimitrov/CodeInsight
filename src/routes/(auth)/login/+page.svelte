@@ -2,7 +2,7 @@
 	import hero from '../../../assets/images/login_hero.jpg';
 	import { t } from 'svelte-i18n';
 	import { loginUser } from '../../../helpers/requests/auth.requests';
-	import { token } from '$lib/stores/userStore';
+	import { refreshToken, token } from '$lib/stores/userStore';
 	import { onMount } from 'svelte';
 	import { isTokenValid } from '../../../helpers/token.helper';
 	import { goto } from '$app/navigation';
@@ -15,7 +15,7 @@
 	};
 
 	onMount(() => {
-		if (isTokenValid(token.value)) {
+		if (isTokenValid(token.value) || isTokenValid(refreshToken.value)) {
 			return goto('/editor');
 		}
 	});

@@ -5,7 +5,7 @@
 	import { t } from 'svelte-i18n';
 	import Logo from '../../assets/icons/Logo.svelte';
 	import Profile from '../../assets/icons/Profile.svelte';
-	import { clearToken } from '$lib/stores/userStore';
+	import { clearToken, clearRefreshToken } from '$lib/stores/userStore';
 	import { getUserInfo } from '../../helpers/requests/user.requests';
 	import LanguageSwitcher from '$lib/language/LanguageSwitcher.svelte';
 
@@ -81,8 +81,13 @@
 								<a class="hover:text-primary" href="/user">{$t('navbar.user_view_profile')}</a>
 							</li>
 							<li>
-								<a class="hover:text-primary" href="/" on:click={clearToken}
-									>{$t('navbar.user_logout')}</a
+								<a
+									class="hover:text-primary"
+									href="/"
+									on:click={() => {
+										clearToken();
+										clearRefreshToken();
+									}}>{$t('navbar.user_logout')}</a
 								>
 							</li>
 						</ul>
