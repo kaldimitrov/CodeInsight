@@ -8,18 +8,19 @@
 	import { addMessages, getLocaleFromNavigator, init } from 'svelte-i18n';
 	import en from '../configuration/translations/en.json';
 	import bg from '../configuration/translations/bg.json';
+	import Cookies from 'js-cookie';
 
 	let loaded = false;
 
 	onMount(async () => {
-		setToken(localStorage.getItem('token') as string);
+		setToken(Cookies.get('token') as string);
 		token.subscribe((newToken: string) => {
-			localStorage.setItem('token', newToken);
+			Cookies.set('token', newToken);
 		});
 
-		setRefreshToken(localStorage.getItem('refreshToken') as string);
+		setRefreshToken(Cookies.get('refreshToken') as string);
 		refreshToken.subscribe((newRefreshToken: string) => {
-			localStorage.setItem('refreshToken', newRefreshToken);
+			Cookies.set('refreshToken', newRefreshToken);
 		});
 
 		theme.value = (localStorage.getItem('theme') as Themes) || Themes.LIGHT;
