@@ -6,7 +6,7 @@ CodeInsight is the ultimate destination for code execution and analysis. Tailore
 
 ## Installation Guide
 
-This section provides detailed instructions on how to set up and build the portfolio project for both development and production environments.
+This section provides detailed instructions on how to set up and build the project for both development and production environments.
 
 ### Development Mode
 
