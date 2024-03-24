@@ -1,4 +1,4 @@
-# Portfolio
+# CodeInsight
 
 [![Demo](https://i.imgur.com/vEzx9UY.png)](https://imgur.com/vEzx9UY.png)
 
